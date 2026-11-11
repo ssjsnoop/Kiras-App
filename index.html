@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a1230">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Kira's App">
+<title>Kira's App</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{--vh:100dvh;--bg1:#0a1230;--bg2:#17284f;--card:rgba(255,255,255,.07);--card2:rgba(255,255,255,.13);--line:rgba(255,255,255,.15);--txt:#eef2ff;--mut:#a9b8de;--teal:#6ee7d8;--lav:#b9a8ff;--warm:#ffd8a0;--rose:#ff9db8}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:#0a1230;color:var(--txt);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow:hidden;touch-action:manipulation;-webkit-user-select:none;user-select:none;overscroll-behavior:none}
+textarea,input[type=text]{-webkit-user-select:text;user-select:text}
+#app{position:fixed;left:0;top:0;width:100%;height:var(--vh);display:flex;flex-direction:column;background:radial-gradient(1200px 700px at 15% -10%,#2a428c55,transparent 60%),radial-gradient(900px 600px at 100% 100%,#6a45a840,transparent 60%),linear-gradient(180deg,var(--bg1),var(--bg2));padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+#hdr{display:flex;align-items:center;gap:8px;padding:10px 12px;min-height:58px;flex:0 0 auto}
+#hdr h1{flex:1;margin:0;font-size:1.15rem;font-weight:650;text-align:center;letter-spacing:.2px}
+.ib{width:46px;height:46px;border-radius:14px;border:1px solid var(--line);background:var(--card);color:var(--txt);font-size:1.25rem;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.ib.hide{visibility:hidden}
+#main{flex:1 1 auto;overflow-y:auto;overflow-x:hidden;padding:6px 16px 96px;-webkit-overflow-scrolling:touch}
+.wrap{max-width:740px;margin:0 auto}
+h2{margin:18px 0 8px;font-size:1.2rem}
+h3{margin:0 0 6px;font-size:1.05rem}
+p{line-height:1.55;margin:8px 0;color:#dfe6ff}
+small,.mut{color:var(--mut)}
+.hello .big{font-size:1.7rem;font-weight:700;margin-top:4px}
+.hello .sub{color:var(--mut);margin:4px 0 14px;line-height:1.45}
+.btn{border:1px solid var(--line);background:var(--card2);color:var(--txt);font:inherit;font-weight:600;padding:14px 18px;border-radius:16px;cursor:pointer;min-height:50px}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:linear-gradient(135deg,#4fd1c5,#6a8cff);border:none;color:#04122a}
+.btn.ghost{background:transparent}
+.btn.full{width:100%}
+.sos{width:100%;display:block;text-align:left;border:none;border-radius:22px;padding:20px 20px;font:inherit;font-size:1.25rem;font-weight:700;color:#1a0a1f;background:linear-gradient(135deg,#ffb4c8,#ffd8a0);box-shadow:0 8px 30px #ff9db833;cursor:pointer}
+.sos small{display:block;font-size:.92rem;font-weight:500;color:#4a2a45;margin-top:4px}
+.sos:active{transform:scale(.98)}
+.note{margin:12px 0;padding:12px 14px;border-radius:14px;background:rgba(110,231,216,.1);border:1px solid rgba(110,231,216,.3);line-height:1.45}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px}
+@media (min-width:640px){.grid{grid-template-columns:repeat(3,1fr)}}
+.tile{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;padding:14px;border-radius:20px;background:var(--card);border:1px solid var(--line);color:var(--txt);font:inherit;cursor:pointer;min-height:112px}
+.tile:active{transform:scale(.97);background:var(--card2)}
+.tile .em{font-size:1.9rem;margin-bottom:4px}
+.tile b{font-size:1.02rem}
+.tile small{font-size:.8rem;line-height:1.3}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:14px 16px;margin:12px 0}
+.card.click{cursor:pointer;display:block;width:100%;text-align:left;color:var(--txt);font:inherit}
+.card.click:active{background:var(--card2)}
+.tag{display:inline-block;font-size:.72rem;padding:3px 9px;border-radius:99px;background:rgba(185,168,255,.18);color:var(--lav);margin-bottom:6px;font-weight:600}
+.helps{color:var(--teal);font-weight:600}
+details{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:0 16px;margin:10px 0}
+summary{padding:14px 0;font-weight:650;cursor:pointer;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"＋";float:right;color:var(--mut)}
+details[open] summary::after{content:"－"}
+details>div{padding-bottom:12px}
+.verse{border-left:3px solid var(--lav);padding:4px 0 4px 12px;margin:12px 0}
+.verse b{display:block;color:var(--lav);font-size:.85rem;margin-top:4px}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0;align-items:center}
+.row.center{justify-content:center}
+.foot{text-align:center;color:var(--mut);font-size:.85rem;margin:26px 0 6px}
+/* breathing */
+.orbwrap{display:flex;flex-direction:column;align-items:center;gap:10px;padding:6px 0}
+.orbbox{width:min(70vw,calc(var(--vh)*.38),320px);aspect-ratio:1;position:relative;display:flex;align-items:center;justify-content:center;margin:6px 0}
+.orb{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 35% 30%,#c9fff7,#4fd1c5 45%,#2f5fb5 100%);box-shadow:0 0 60px #6ee7d855,inset 0 0 40px #ffffff30;transform:scale(.55);transition-property:transform;transition-timing-function:ease-in-out;transition-duration:1s}
+.orbtxt{position:relative;z-index:2;text-align:center;font-weight:650;font-size:1.02rem;padding:0 14%;text-shadow:0 1px 10px #000a;line-height:1.25}
+.bcount{font-size:2.1rem;font-weight:700;height:2.6rem;color:var(--teal)}
+.bcyc{color:var(--mut);height:1.4rem}
+/* guided */
+.gbox{display:flex;flex-direction:column;gap:16px;align-items:center;text-align:center;padding:10px 0}
+.gstep{font-size:1.35rem;line-height:1.5;min-height:9rem;display:flex;align-items:center;justify-content:center;padding:0 6px}
+.bar{width:100%;height:8px;border-radius:99px;background:var(--card2);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#4fd1c5,#b9a8ff);transition:width .3s linear}
+.gtime{color:var(--mut);height:1.2rem}
+/* grounding */
+.gr{text-align:center;padding:10px 0}
+.grem{font-size:3.4rem}
+.grn{font-size:1.5rem;font-weight:700;margin:4px 0}
+.dots{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:18px 0}
+.dot{width:62px;height:62px;border-radius:50%;border:2px solid var(--teal);background:transparent;color:var(--teal);font:inherit;font-size:1.3rem;font-weight:700;cursor:pointer}
+.dot.on{background:var(--teal);color:#04122a}
+/* range */
+input[type=range]{width:100%;accent-color:#6ee7d8;height:36px}
+.rv{font-size:2.6rem;font-weight:700;text-align:center;color:var(--warm)}
+.rl{display:flex;justify-content:space-between;color:var(--mut);font-size:.82rem}
+.stepper{color:var(--mut);font-size:.85rem;text-align:center;margin-bottom:4px}
+.big{font-size:1.3rem;line-height:1.5}
+.say{font-size:1.5rem;line-height:1.45;text-align:center;min-height:9rem;display:flex;align-items:center;justify-content:center;font-weight:600}
+/* sounds */
+.sgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.sbtn{padding:16px 10px;border-radius:18px;border:1px solid var(--line);background:var(--card);color:var(--txt);font:inherit;font-weight:600;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px}
+.sbtn span{font-size:1.8rem}
+.sbtn.on{background:linear-gradient(135deg,#4fd1c566,#6a8cff66);border-color:var(--teal)}
+.chip{padding:10px 14px;border-radius:99px;border:1px solid var(--line);background:var(--card);color:var(--txt);font:inherit;cursor:pointer}
+.chip.on{background:var(--teal);color:#04122a;font-weight:700}
+#np{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom));background:#1b2c5c;border:1px solid var(--teal);color:var(--txt);padding:8px 14px;font-size:.85rem;border-radius:99px;font:inherit;font-size:.85rem;font-weight:600;z-index:20;display:none;box-shadow:0 6px 24px #0008;cursor:pointer}
+/* word game */
+.wg{display:flex;flex-direction:column;align-items:center;gap:6px}
+.wrow{display:flex;gap:6px}
+.wc{width:min(15vw,calc(var(--vh)*.075),56px);aspect-ratio:1;border:2px solid var(--line);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:700;text-transform:uppercase}
+.wc.f{border-color:#8fa0d0}
+.wc.g{background:#3a9d6a;border-color:#3a9d6a}
+.wc.y{background:#c9a227;border-color:#c9a227}
+.wc.x{background:#3b4468;border-color:#3b4468}
+.kb{display:flex;flex-direction:column;gap:6px;width:100%;max-width:520px;margin-top:8px}
+.kr{display:flex;gap:5px;justify-content:center}
+.k{flex:1;max-width:46px;min-width:0;height:48px;border-radius:9px;border:none;background:#34426f;color:var(--txt);font:inherit;font-weight:700;text-transform:uppercase;cursor:pointer;padding:0}
+.k.w{max-width:64px;flex:1.5}
+.k.g{background:#3a9d6a}.k.y{background:#c9a227}.k.x{background:#1f2644;color:#7f8bb3}
+.msg{min-height:1.5rem;text-align:center;color:var(--warm);font-weight:600}
+.tiles{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:10px 0;min-height:56px}
+.tl{width:48px;height:54px;border-radius:12px;border:2px solid var(--line);background:var(--card2);color:var(--txt);font:inherit;font-size:1.5rem;font-weight:700;text-transform:uppercase;cursor:pointer}
+.tl.used{opacity:.25}
+.tl.ans{border-color:var(--teal)}
+/* adventure */
+.alog{background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:18px;padding:14px;height:min(42vh,calc(var(--vh)*.4));overflow-y:auto;line-height:1.55}
+.alog p{margin:0 0 10px}
+.alog .you{color:var(--teal)}
+.alog .rn{color:var(--warm);font-weight:700}
+.compass{display:grid;grid-template-columns:repeat(3,64px);grid-template-rows:repeat(3,54px);gap:6px;justify-content:center;margin:12px 0}
+.compass button{border-radius:14px;border:1px solid var(--line);background:var(--card2);color:var(--txt);font:inherit;font-weight:700;font-size:1.1rem;cursor:pointer}
+.acts{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+/* draw & pop */
+canvas#cv{width:100%;max-width:min(560px,calc(var(--vh)*.58));aspect-ratio:1;display:block;margin:8px auto;border-radius:20px;background:#070d24;border:1px solid var(--line);touch-action:none}
+.sw{width:34px;height:34px;border-radius:50%;border:3px solid transparent;cursor:pointer}
+.sw.on{border-color:#fff}
+.bubs{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;max-width:420px;margin:10px auto}
+.bub{aspect-ratio:1;border-radius:50%;border:none;cursor:pointer;background:radial-gradient(circle at 32% 28%,#ffffffaa,#8fd3ff66 40%,#6a8cff55 100%);box-shadow:inset 0 0 14px #ffffff55,0 4px 10px #0005;transition:transform .12s,opacity .25s}
+.bub.p{transform:scale(.35);opacity:.15;box-shadow:none}
+/* worry */
+textarea{width:100%;min-height:130px;border-radius:16px;border:1px solid var(--line);background:rgba(0,0,0,.25);color:var(--txt);font:inherit;padding:12px;resize:vertical}
+.float{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);max-width:80vw;background:#fff2;border:1px solid var(--line);padding:14px 18px;border-radius:16px;animation:fl 4.5s ease-in forwards;pointer-events:none;z-index:30}
+@keyframes fl{to{transform:translate(-50%,-420%) scale(.4);opacity:0}}
+#heart{position:fixed;right:calc(14px + env(safe-area-inset-right));bottom:calc(14px + env(safe-area-inset-bottom));width:54px;height:54px;border-radius:50%;border:1px solid #ff9db866;background:rgba(255,120,160,.22);font-size:1.6rem;z-index:25;cursor:pointer;display:flex;align-items:center;justify-content:center;animation:hb 2.4s ease-in-out infinite;padding:0;box-shadow:0 4px 18px #ff6f9f44}
+#heart:active{transform:scale(.88)}
+@keyframes hb{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+#toast{position:fixed;left:50%;top:calc(70px + env(safe-area-inset-top));transform:translate(-50%,-20px);background:linear-gradient(135deg,#ff9db8,#ffd8a0);color:#3a1030;padding:14px 20px;border-radius:18px;font-size:1.1rem;z-index:80;opacity:0;pointer-events:none;transition:all .3s;max-width:88vw;text-align:center;box-shadow:0 8px 30px #0006}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+.fh{position:fixed;font-size:1.4rem;z-index:26;pointer-events:none;animation:fhup 1.6s ease-out forwards}
+@keyframes fhup{to{transform:translate(var(--dx),-180px) scale(1.3);opacity:0}}
+.cf{position:fixed;top:-14px;width:10px;height:14px;border-radius:2px;z-index:70;pointer-events:none;animation:cfall linear forwards}
+@keyframes cfall{to{transform:translateY(110vh) rotate(720deg);opacity:.9}}
+.overlay{position:fixed;inset:0;z-index:90;background:rgba(5,10,30,.88);display:flex;align-items:center;justify-content:center;padding:20px;overflow:hidden}
+.obox{text-align:center;max-width:420px;width:100%;position:relative;z-index:2}
+.dadface{font-size:6rem;animation:shk .35s infinite}
+@keyframes shk{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
+.oh{font-size:2rem;font-weight:800;color:var(--warm)}
+.shout{font-size:2.6rem;font-weight:900;color:#ff6b6b;margin:6px 0;animation:shk .25s infinite}
+.hr{position:absolute;top:-40px;color:#8a5a2b;font-size:2rem;font-weight:800;z-index:1;animation:hfall linear forwards}
+@keyframes hfall{to{transform:translateY(110vh) rotate(300deg)}}
+.dnp{background:#c62828;border-color:#ff8a80;color:#fff}
+.scene{position:relative;height:min(46vh,calc(var(--vh)*.44),310px);border-radius:24px;overflow:hidden;background:linear-gradient(#bfe9ff 0%,#eaf9d6 60%,#9bdc8a 60%,#7cc971 100%);border:1px solid var(--line);transition:background .6s}
+.scene.night{background:linear-gradient(#1b2150 0%,#2d3470 60%,#26563f 60%,#1d4430 100%)}
+.scene .pet{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;cursor:pointer}
+.scene .pet svg{height:96%;width:auto;animation:bob 2.4s ease-in-out infinite;transform-origin:50% 100%}
+.scene.night .pet svg{animation-duration:4s}
+@keyframes bob{0%,100%{transform:translateY(0) scaleY(1)}50%{transform:translateY(-4px) scaleY(1.02)}}
+.scene .poop{position:absolute;bottom:8%;font-size:1.7rem;pointer-events:none}
+.fx{position:absolute;font-size:2rem;pointer-events:none;animation:fxp 1.4s ease-out forwards}
+@keyframes fxp{0%{transform:translateY(0) scale(.6);opacity:1}100%{transform:translateY(-90px) scale(1.4);opacity:0}}
+.bars{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;margin:12px 0}
+.bar2{display:flex;align-items:center;gap:8px}
+.trk{flex:1;height:12px;border-radius:99px;background:var(--card2);overflow:hidden}
+.trk i{display:block;height:100%;border-radius:99px;transition:width .4s}
+.abts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.abtn{padding:12px 4px;border-radius:16px;border:1px solid var(--line);background:var(--card2);color:var(--txt);font:inherit;font-size:.85rem;font-weight:600;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
+.abtn span{font-size:1.6rem}
+.abtn:active{transform:scale(.95)}
+.petsay{min-height:2.6rem;text-align:center;color:var(--warm);font-weight:600;margin:8px 0}
+.eggs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.eggb{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:8px 4px;color:var(--txt);font:inherit;font-weight:600;font-size:.85rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px}
+.eggb svg{width:100%;max-width:90px;height:auto}
+.eggbig{display:flex;justify-content:center;margin:10px 0}
+.eggbig svg{height:min(40vh,calc(var(--vh)*.4),280px);width:auto;cursor:pointer}
+.wob{animation:wob .5s}
+@keyframes wob{0%,100%{transform:rotate(0)}20%{transform:rotate(-9deg)}40%{transform:rotate(8deg)}60%{transform:rotate(-6deg)}80%{transform:rotate(4deg)}}
+.hall{display:flex;gap:8px;flex-wrap:wrap}
+.hall div{width:76px;text-align:center;font-size:.72rem;color:var(--mut)}
+.hall svg{width:100%;height:auto}
+input.tx{width:100%;padding:14px;border-radius:14px;border:1px solid var(--line);background:rgba(0,0,0,.25);color:var(--txt);font:inherit;font-size:1.1rem}
+.mg{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:420px;margin:10px auto}
+.mc{aspect-ratio:1;border-radius:16px;border:1px solid var(--line);background:linear-gradient(135deg,#4a5fb0,#7a52d6);font-size:2rem;cursor:pointer;color:#fff;padding:0}
+.mc.o{background:var(--card2)}
+.mc.d{background:rgba(110,231,216,.25);border-color:var(--teal)}
+.ffs{position:relative;height:min(52vh,calc(var(--vh)*.5),420px);border-radius:22px;background:radial-gradient(ellipse at 50% 100%,#1f3b2f,#0a1230 70%);border:1px solid var(--line);overflow:hidden;touch-action:manipulation}
+.ff{position:absolute;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:50%;background:radial-gradient(circle,#fff8b0 0%,#ffe45c 35%,#ffe45c00 70%);box-shadow:0 0 18px 6px #ffe45c88;border:none;padding:0;cursor:pointer}
+.pads{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:340px;margin:14px auto}
+.pad{aspect-ratio:1;border-radius:24px;border:none;cursor:pointer;opacity:.55;transition:opacity .15s,transform .15s}
+.pad.lit{opacity:1;transform:scale(1.06);box-shadow:0 0 30px currentColor}
+.purr{font-size:min(40vw,200px);text-align:center;line-height:1.1;cursor:pointer;margin:10px 0;user-select:none}
+.purr:active{transform:scale(.93)}
+.joke{font-size:1.3rem;line-height:1.5;text-align:center;min-height:7rem;display:flex;align-items:center;justify-content:center}
+@media (orientation:landscape) and (max-height:520px){.bsplit{display:flex;gap:16px;align-items:center}.bsplit>*{flex:1 1 50%;min-width:0}.orbbox{width:min(34vw,calc(var(--vh)*.38),160px);margin:0}.bcount{font-size:1.5rem;height:1.8rem}.orbwrap{gap:4px}}
+@media (prefers-reduced-motion:reduce){.orb{transition-duration:0s!important}}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="hdr">
+    <button class="ib hide" id="back" aria-label="Back">←</button>
+    <h1 id="title">Kira's App</h1>
+    <button class="ib" id="snd" aria-label="Toggle sound effects">🔔</button>
+  </div>
+  <div id="main"></div>
+  <button id="np"></button>
+  <button id="heart" aria-label="A message from Dad">❤️</button>
+  <div id="toast"></div>
+</div>
+
+<script>
+(function(){
+'use strict';
+var $=function(s,e){return (e||document).querySelector(s)};
+var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+var store={get:function(k,d){try{var v=localStorage.getItem('kira.'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set:function(k,v){try{localStorage.setItem('kira.'+k,JSON.stringify(v))}catch(e){}}};
+var main=$('#main'),titleEl=$('#title'),backBtn=$('#back'),sndBtn=$('#snd'),npBtn=$('#np');
+
+/* ---------- viewport fit (rotation-safe) ---------- */
+function fit(){
+  var h=(window.visualViewport&&window.visualViewport.height)||window.innerHeight;
+  document.documentElement.style.setProperty('--vh',Math.round(h)+'px');
+}
+function refit(){
+  fit();
+  [80,250,500,1000].forEach(function(ms){setTimeout(function(){
+    fit();
+    var a=$('#app'); a.style.transform='translateZ(0)'; void a.offsetHeight; a.style.transform='';
+  },ms)});
+}
+window.addEventListener('resize',refit);
+window.addEventListener('orientationchange',refit);
+if(window.visualViewport){window.visualViewport.addEventListener('resize',refit);}
+document.addEventListener('visibilitychange',function(){if(!document.hidden)refit()});
+window.addEventListener('pageshow',refit);
+fit();
+
+/* ---------- audio ---------- */
+var AC=null,soundOn=store.get('sfx',true);
+function ac(){if(!AC){var C=window.AudioContext||window.webkitAudioContext;AC=new C()}if(AC.state==='suspended')AC.resume();return AC}
+function updSnd(){sndBtn.textContent=soundOn?'🔔':'🔕'}
+sndBtn.onclick=function(){soundOn=!soundOn;store.set('sfx',soundOn);updSnd();if(soundOn)chime(660,.08,1.2)};
+updSnd();
+function chime(f,v,d){
+  if(!soundOn)return;
+  try{var a=ac(),t=a.currentTime;f=f||528;v=v||.14;d=d||2.6;
+    [1,2.01,3.2].forEach(function(m,i){var o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.value=f*m;
+      g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v/(i+1),t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+d);
+      o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+d+.1)});
+  }catch(e){}
+}
+function blip(f){
+  if(!soundOn)return;
+  try{var a=ac(),t=a.currentTime,o=a.createOscillator(),g=a.createGain();f=f||520;o.type='sine';
+    o.frequency.setValueAtTime(f,t);o.frequency.exponentialRampToValueAtTime(f*1.6,t+.08);
+    g.gain.setValueAtTime(.12,t);g.gain.exponentialRampToValueAtTime(.0001,t+.14);
+    o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+.16);}catch(e){}
+}
+var wl=null;
+function lockOn(){try{if(navigator.wakeLock){navigator.wakeLock.request('screen').then(function(l){wl=l}).catch(function(){})}}catch(e){}}
+function lockOff(){try{if(wl)wl.release()}catch(e){}wl=null}
+
+/* ---------- router ---------- */
+var S={},cur=null,stack=[],cleanups=[];
+function onLeave(fn){cleanups.push(fn)}
+function runCleanups(){var c=cleanups;cleanups=[];c.forEach(function(f){try{f()}catch(e){}})}
+function go(name,arg,noPush){
+  runCleanups();
+  if(cur&&!noPush)stack.push(cur);
+  cur={name:name,arg:arg};
+  paint();
+}
+function back(){runCleanups();cur=stack.pop()||{name:'home'};paint()}
+function paint(){
+  var s=S[cur.name];
+  titleEl.textContent=typeof s.title==='function'?s.title(cur.arg):s.title;
+  backBtn.classList.toggle('hide',cur.name==='home');
+  main.innerHTML='';main.scrollTop=0;
+  var w=document.createElement('div');w.className='wrap';main.appendChild(w);
+  s.render(w,cur.arg);
+}
+backBtn.onclick=back;
+main.addEventListener('click',function(e){
+  var t=e.target.closest('[data-go]');
+  if(t&&main.contains(t)){go(t.dataset.go,t.dataset.arg)}
+});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&cur&&cur.name!=='home')back()});
+function tile(g,em,t,sub){return '<button class="tile" data-go="'+g+'"><span class="em">'+em+'</span><b>'+t+'</b><small>'+sub+'</small></button>'}
+
+/* ---------- shared components ---------- */
+var IN=1,OUT=.55;
+function P(t,s,to){return {t:t,s:s,to:to}}
+var TECH=[
+ {id:'wave',name:'Calm Wave (4 in, 6 out)',emoji:'🌊',tag:'Best first choice in a panic',cycles:8,
+  helps:'Helps slow a pounding heart and calm the "alarm" in your body.',
+  how:'Breathe in through your nose for 4. Breathe out slowly through your mouth for 6. A longer breath out tells your nervous system it is safe to slow down.',
+  phases:[P('Breathe in',4,IN),P('Breathe out slowly',6,OUT)]},
+ {id:'sigh',name:'Physiological Sigh',emoji:'😮‍💨',tag:'Fastest reset',cycles:6,
+  helps:'Helps when you feel a sudden wave of panic or tightness. It is one of the quickest ways to bring your body down.',
+  how:'Breathe in through your nose, then take a second small sip of air on top. Then let out one long slow breath through your mouth.',
+  phases:[P('Breathe in through your nose',2,.85),P('A little extra sip of air',1,IN),P('Long, slow breath out',6,OUT)]},
+ {id:'box',name:'Box Breathing (4-4-4-4)',emoji:'⬜',tag:'Steadies a racing mind',cycles:5,
+  helps:'Helps when your thoughts are racing and you need to feel steady and in control. Pilots, athletes and soldiers use it.',
+  how:'Four equal sides: in for 4, hold for 4, out for 4, hold for 4. Picture tracing a square.',
+  phases:[P('Breathe in',4,IN),P('Hold gently',4),P('Breathe out',4,OUT),P('Hold gently',4)]},
+ {id:'478',name:'4-7-8 Breathing',emoji:'🌙',tag:'Great for nighttime',cycles:4,
+  helps:'Helps you wind down and fall asleep, and settles a fast heartbeat. Good for lying in bed when the worries start.',
+  how:'In for 4, hold for 7, out for 8. If you feel dizzy, shorten the counts or just breathe normally. Go gently, there is no need to push it.',
+  phases:[P('Breathe in',4,IN),P('Hold gently',7),P('Breathe out slowly',8,OUT)]},
+ {id:'flower',name:'Flower & Candle',emoji:'🕯️',tag:'For a tight chest',cycles:8,
+  helps:'Helps when it feels like you cannot get a full breath or your chest feels tight. Slow pursed-lip breathing keeps the airways relaxed.',
+  how:'Smell the flower: breathe in through your nose. Blow out the candle: breathe out slowly through pursed lips, like blowing gently so the flame only flickers.',
+  phases:[P('Smell the flower (in through your nose)',3,IN),P('Blow out the candle (slowly, lips pursed)',5,OUT)]},
+ {id:'bee',name:'Humming Bee Breath',emoji:'🐝',tag:'Calms through vibration',cycles:6,
+  helps:'Helps calm your nervous system. The soft humming vibration in your head and chest is soothing, and it naturally makes your breath out long.',
+  how:'Breathe in through your nose. Close your lips and hum quietly on the way out, like a bee. Feel the buzz in your face.',
+  phases:[P('Breathe in',4,IN),P('Hum out... mmmmmm',6,OUT)]},
+ {id:'coh',name:'Steady 5-5',emoji:'🫧',tag:'Daily calm practice',cycles:10,
+  helps:'Helps train your body to stay calmer in general. Try it a few minutes a day when you are okay, so it is easier to use when you are not.',
+  how:'Breathe in for 5 and out for 5, smooth and even, with no pause. About six breaths a minute is a very relaxed pace.',
+  phases:[P('Breathe in',5,IN),P('Breathe out',5,OUT)]}
+];
+var BPRAYER=[
+ {id:'bp1',name:'"Lord Jesus... give me Your peace"',emoji:'✝️',tag:'Breath prayer',cycles:8,helps:'A breath prayer joins slow breathing with a short prayer. Say the words quietly in your mind as you breathe.',how:'Breathe in while thinking the first part. Breathe out slowly while thinking the second part.',phases:[P('Lord Jesus...',4,IN),P('...give me Your peace',6,OUT)]},
+ {id:'bp2',name:'"God is with me... I am not alone"',emoji:'🤍',tag:'Breath prayer',cycles:8,helps:'Good for when fear says you are all alone.',how:'In: God is with me. Out: I am not alone.',phases:[P('God is with me...',4,IN),P('...I am not alone',6,OUT)]},
+ {id:'bp3',name:'"Be still... and know"',emoji:'🕊️',tag:'Breath prayer (Psalm 46:10)',cycles:8,helps:'Slow and quiet. Comes from Psalm 46:10, "Be still, and know that I am God."',how:'In: Be still. Out: and know that You are God.',phases:[P('Be still...',4,IN),P('...and know that You are God',6,OUT)]},
+ {id:'bp4',name:'"I will trust in You"',emoji:'⚓',tag:'Breath prayer (Psalm 56:3)',cycles:8,helps:'For the moments fear shows up. From Psalm 56:3: "What time I am afraid, I will trust in thee."',how:'In: When I am afraid. Out: I will trust in You.',phases:[P('When I am afraid...',4,IN),P('...I will trust in You',6,OUT)]}
+];
+function techById(id){return TECH.concat(BPRAYER).filter(function(t){return t.id===id})[0]}
+
+function breathUI(c,tech,o){
+  o=o||{};
+  c.innerHTML='<div class="orbwrap"><div class="orbbox"><div class="orb"></div><div class="orbtxt">Ready when you are</div></div><div class="bcount"></div><div class="bcyc"></div><button class="btn primary">Start</button></div>';
+  var orb=$('.orb',c),otxt=$('.orbtxt',c),bc=$('.bcount',c),bcy=$('.bcyc',c),btn=$('button',c);
+  var run=false,timers=[],cyc=0;
+  function clr(){timers.forEach(function(i){clearTimeout(i);clearInterval(i)});timers=[]}
+  function stop(){run=false;clr();lockOff()}
+  onLeave(stop);
+  function phase(i){
+    if(!run)return;
+    var p=tech.phases[i];
+    otxt.textContent=p.t;
+    orb.style.transitionDuration=p.s+'s';
+    if(p.to!=null)orb.style.transform='scale('+p.to+')';
+    var left=p.s;bc.textContent=left;
+    var iv=setInterval(function(){left--;if(left>0)bc.textContent=left},1000);
+    timers.push(iv);
+    timers.push(setTimeout(function(){
+      clearInterval(iv);
+      if(i+1<tech.phases.length){phase(i+1)}
+      else{cyc++;bcy.textContent='Round '+Math.min(cyc+1,tech.cycles)+' of '+tech.cycles;
+        if(cyc>=tech.cycles){finish()}else{phase(0)}}
+    },p.s*1000));
+  }
+  function finish(){
+    run=false;clr();lockOff();
+    orb.style.transitionDuration='3s';orb.style.transform='scale(.7)';
+    otxt.textContent='Well done 💙';bc.textContent='';bcy.textContent='Notice how your body feels now.';
+    btn.textContent='Go again';chime(528);
+    if(o.onDone)o.onDone();
+  }
+  function start(){
+    if(run){stop();btn.textContent='Start';otxt.textContent='Paused. Start when ready.';bc.textContent='';return}
+    ac();run=true;cyc=0;lockOn();btn.textContent='Pause';bcy.textContent='Round 1 of '+tech.cycles;
+    orb.style.transitionDuration='1s';orb.style.transform='scale('+OUT+')';
+    timers.push(setTimeout(function(){phase(0)},900));
+  }
+  btn.onclick=start;
+  if(o.auto)start();
+}
+
+function guided(c,sess,onEnd){
+  var i=-1,left=0,paused=true,iv=null,done=0,total=sess.steps.reduce(function(a,s){return a+s.s},0);
+  c.innerHTML='<div class="gbox"><div class="gstep"></div><div class="bar"><i></i></div><div class="gtime"></div><div class="row center"><button class="btn primary" id="gp">Start</button><button class="btn ghost" id="gn">Skip step ▶</button></div></div>';
+  var gs=$('.gstep',c),gb=$('.bar i',c),gt=$('.gtime',c),gp=$('#gp',c),gn=$('#gn',c);
+  gs.textContent=sess.intro||'Find a comfortable spot. Press Start when you are ready.';
+  function upd(){gb.style.width=Math.min(100,done/total*100)+'%';var r=Math.max(0,Math.round(total-done));gt.textContent=(Math.floor(r/60))+':'+('0'+(r%60)).slice(-2)+' left'}
+  function nxt(){
+    i++;
+    if(i>=sess.steps.length){fin();return}
+    gs.textContent=sess.steps[i].t;left=sess.steps[i].s;
+    if(sess.steps[i].c)chime(440,.08,2);
+  }
+  function fin(){clearInterval(iv);iv=null;paused=true;lockOff();gs.textContent=sess.end||'Well done.';gb.style.width='100%';gt.textContent='';gp.textContent='Again';i=-1;done=0;left=0;chime(528);if(onEnd)onEnd()}
+  gp.onclick=function(){
+    if(i===-1&&paused&&gp.textContent!=='Pause'){ac();lockOn();chime(440,.1,2.5);paused=false;gp.textContent='Pause';nxt();upd();
+      iv=setInterval(function(){if(paused)return;left-=.25;done+=.25;upd();if(left<=0)nxt()},250);return}
+    paused=!paused;gp.textContent=paused?'Resume':'Pause';
+  };
+  gn.onclick=function(){if(i>=0&&!paused||i>=0){done+=Math.max(0,left);nxt();upd()}};
+  onLeave(function(){clearInterval(iv);lockOff()});
+}
+
+var SENSES=[
+ ['👀','see',5,'Look around the room. Find 5 things you can see. Tap a circle each time you name one (out loud or in your head).'],
+ ['✋','feel',4,'Find 4 things you can feel. Your feet on the floor, your clothes, the chair, your hair.'],
+ ['👂','hear',3,'Listen. Find 3 things you can hear. Near sounds, far sounds, even your own breathing.'],
+ ['👃','smell',2,'Find 2 things you can smell. Or think of 2 smells you love.'],
+ ['👅','taste',1,'1 thing you can taste. Or one taste you like.']
+];
+function groundUI(c,onDone){
+  var si=0,cnt=0;
+  function draw(){
+    var s=SENSES[si],n=s[2],h='';
+    for(var k=0;k<n;k++)h+='<button class="dot'+(k<cnt?' on':'')+'" data-k="'+k+'">'+(k<cnt?'✓':(k+1))+'</button>';
+    c.innerHTML='<div class="gr"><div class="grem">'+s[0]+'</div><div class="grn">'+n+' thing'+(n>1?'s':'')+' you can '+s[1]+'</div><p>'+s[3]+'</p><div class="dots">'+h+'</div></div>';
+    c.querySelectorAll('.dot').forEach(function(b){b.onclick=function(){
+      if(+b.dataset.k===cnt){cnt++;blip(400+si*80);
+        if(cnt>=n){si++;cnt=0;if(si>=SENSES.length){fin();return}}
+        draw();}
+    }});
+  }
+  function fin(){
+    chime(528);
+    c.innerHTML='<div class="gr"><div class="grem">🌿</div><div class="grn">You are here.</div><p>You are in this room, in this moment, and you are safe. Your senses just proved it.</p>'+(onDone?'':'<button class="btn primary" id="gagain">Do it again</button>')+'</div>';
+    var a=$('#gagain',c);if(a)a.onclick=function(){si=0;cnt=0;draw()};
+    if(onDone)onDone();
+  }
+  draw();
+}
+
+var SAYS=[
+ 'This is a panic wave. It feels awful, but it is not dangerous.',
+ 'My body is sounding a false alarm. It is loud, but there is no emergency.',
+ 'A pounding heart is a strong heart doing its job.',
+ 'Waves rise, then they fall. This one will too.',
+ 'I do not have to fight it. I can let it pass through me.',
+ 'I have felt this before and I am still here. I always come out the other side.',
+ 'I only need to get through the next breath.',
+ 'I am safe right now, in this moment.'
+];
+function saysUI(c,onDone){
+  var i=0;
+  function draw(){
+    c.innerHTML='<div class="say">'+esc(SAYS[i])+'</div><div class="row center"><button class="btn primary" id="sn">'+(i<SAYS.length-1?'Next ▶':'Done ✓')+'</button></div><div class="stepper">Say it out loud or in your head. Breathe out slowly as you do. ('+(i+1)+'/'+SAYS.length+')</div>';
+    $('#sn',c).onclick=function(){blip(480);if(i<SAYS.length-1){i++;draw()}else{if(onDone)onDone()}};
+  }
+  draw();
+}
+
+/* ---------- HOME ---------- */
+S.home={title:"Kira's App",render:function(m){
+  var log=store.get('log',[]);
+  m.innerHTML='<div class="hello"><div class="big" id="hi">Hi Kira 💙</div><div class="sub">You are safe. Take your time. Nothing in here is a test.</div></div>'+
+  '<button class="sos" data-go="sos">🌊 I\'m having a panic wave<small>Tap here. I will walk you through it, one step at a time.</small></button>'+
+  (log.length?'<div class="note">You have ridden out <b>'+log.length+'</b> wave'+(log.length>1?'s':'')+' with this app. Every single one passed.</div>':'')+
+  '<div class="grid">'+
+  tile('breathe','🌬️','Breathe','7 breathing techniques and what each helps')+
+  tile('ground','🌿','Ground yourself','5-4-3-2-1, muscle relaxing, quick tricks')+
+  tile('meditate','🧘','Meditate','Learn how, then try guided ones')+
+  tile('pray','🙏','Pray','Prayers, verses, breath prayers')+
+  tile('sounds','🌧️','Calm sounds','Rain, ocean, wind, hum')+
+  tile('pet','🐣','Pet buddy','Hatch an egg and raise a creature')+
+  tile('games','🎮','Games','Word, memory, adventure and more')+
+  tile('relax','🎨','Draw & pop','Mandala drawing, bubble pop')+
+  tile('worry','🫙','Worry jar','Write it down, let it go')+
+  tile('understand','💡','Understand panic','What is really happening')+
+  tile('jokes','😂','Dad jokes','Guaranteed groans')+
+  tile('talk','🤝','Talk to someone','Who to tell, and when')+
+  '</div>'+(isStandalone()?'':(window.__dip?'<button class="btn primary full" id="inst" style="margin-top:14px">📲 Install Kira\'s App on this phone</button>':'')+'<details style="margin-top:14px"><summary>📲 Put this app on your phone</summary><div><p><b>Android</b> (Chrome or Samsung Internet): open the app\'s link, tap the ⋮ or ≡ menu, then <b>Install app</b> or <b>Add to Home screen</b>.</p><p><b>iPhone</b>: open it in Safari, tap the Share button, then <b>Add to Home Screen</b>.</p><p>After that it opens full-screen like a real app and works without Wi-Fi.</p></div></details>')+'<div class="foot">Made with love by Dad 💙</div><div class="row center"><button class="btn dnp" id="dnp">🔴 Do not press</button></div>';
+  $('#dnp',m).onclick=dadOverlay;
+  var ib=$('#inst',m);if(ib)ib.onclick=function(){try{window.__dip.prompt();window.__dip.userChoice.then(function(){window.__dip=null;paint()})}catch(e){}};
+  var HI=['Hi Kira 💙','Hello, Your Majesty 👑','Greetings, Supreme Ruler of the Universe 🌌','Welcome back, Legend 🏆'],hc=0;
+  $('#hi',m).onclick=function(){hc=(hc+1)%HI.length;this.textContent=HI[hc];blip(500+hc*60)};
+}};
+
+/* ---------- SOS ---------- */
+S.sos={title:'Right now',render:function(m){
+  var step=0,before=5;
+  function show(){
+    runCleanups();
+    if(step===0){
+      m.innerHTML='<div class="stepper">Step 1 of 5</div><div class="card big">This is a <b>panic wave</b>. It feels terrible, but it <b>cannot hurt you</b>, and it <b>will pass</b>. You do not have to do anything perfectly. Just follow along.</div>'+
+      '<div class="card"><h3>How big is the fear right now?</h3><div class="rv" id="rv">5</div><input type="range" id="rg" min="0" max="10" value="5"><div class="rl"><span>0 calm</span><span>10 worst</span></div></div>'+
+      '<p class="mut" style="text-align:center">Put your feet flat on the floor. Lean back on something solid.</p>'+
+      '<button class="btn primary full" id="nx">Start ▶</button>';
+      var rg=$('#rg',m);rg.oninput=function(){$('#rv',m).textContent=rg.value;before=+rg.value};
+      $('#nx',m).onclick=function(){ac();step=1;show()};
+    }else if(step===1){
+      m.innerHTML='<div class="stepper">Step 2 of 5: Breathe</div><p style="text-align:center">Follow the circle. Long, slow breaths out tell your body it is safe.</p><div id="bx"></div><div class="row center"><button class="btn" id="nx">Next ▶</button><button class="btn ghost" id="other">Try a different breath</button></div>';
+      breathUI($('#bx',m),TECH[0],{auto:true,onDone:function(){$('#nx',m).classList.add('primary')}});
+      $('#nx',m).onclick=function(){step=2;show()};
+      $('#other',m).onclick=function(){go('breathe')};
+    }else if(step===2){
+      m.innerHTML='<div class="stepper">Step 3 of 5: Ground</div><div id="gx"></div><div class="row center"><button class="btn" id="nx">Skip ▶</button></div>';
+      groundUI($('#gx',m),function(){var n=$('#nx',m);n.textContent='Next ▶';n.classList.add('primary')});
+      $('#nx',m).onclick=function(){step=3;show()};
+    }else if(step===3){
+      m.innerHTML='<div class="stepper">Step 4 of 5: Remind your brain</div><div id="sx"></div>';
+      saysUI($('#sx',m),function(){step=4;show()});
+    }else{
+      m.innerHTML='<div class="stepper">Step 5 of 5</div><div class="card"><h3>How big is the fear now?</h3><div class="rv" id="rv">'+Math.max(0,before-2)+'</div><input type="range" id="rg" min="0" max="10" value="'+Math.max(0,before-2)+'"><div class="rl"><span>0 calm</span><span>10 worst</span></div></div><button class="btn primary full" id="nx">Done ✓</button>';
+      var after=Math.max(0,before-2),rg=$('#rg',m);rg.oninput=function(){after=+rg.value;$('#rv',m).textContent=after};
+      $('#nx',m).onclick=function(){
+        var log=store.get('log',[]);log.push({t:Date.now(),b:before,a:after});store.set('log',log.slice(-100));
+        var msg=after<before?'It went from <b>'+before+'</b> down to <b>'+after+'</b>. You did that. 💙':(after===before?'It is the same for now. That is okay. Waves can take a couple of rounds. Go again, or try something different below.':'It feels bigger right now, and that is okay. Sometimes it takes a few rounds. Try another tool below, or go find someone you trust.');
+        m.innerHTML='<div class="card big" style="text-align:center">'+msg+'</div><p style="text-align:center">You stayed with it, and that takes real courage.</p>'+
+        '<div class="grid"><button class="tile" id="again"><span class="em">🔁</span><b>Go again</b><small>Another round</small></button>'+tile('breathe','🌬️','Other breathing','Pick a different one')+tile('pray','🙏','Pray','Prayers and verses')+tile('sounds','🌧️','Calm sounds','Rain, ocean, wind')+tile('games','🎮','Distract my brain','Word games, adventure')+tile('talk','🤝','Talk to someone','A grown-up you trust')+'</div>';
+        $('#again',m).onclick=function(){step=0;show()};
+      };
+    }
+  }
+  show();
+}};
+
+/* ---------- BREATHE ---------- */
+S.breathe={title:'Breathe',render:function(m){
+  var h='<p>Slow breathing is one of the quickest ways to tell your body the danger is over. Breathe in through your nose if you can. If you feel dizzy, breathe normally for a bit. Pick one:</p>';
+  TECH.forEach(function(t){h+='<button class="card click" data-go="breathe_do" data-arg="'+t.id+'"><span class="tag">'+t.tag+'</span><h3>'+t.emoji+' '+t.name+'</h3><div class="helps">'+t.helps+'</div></button>'});
+  m.innerHTML=h;
+}};
+S.breathe_do={title:function(a){return techById(a).name},render:function(m,id){
+  var t=techById(id);
+  m.innerHTML='<div class="bsplit"><div class="card"><span class="tag">'+t.tag+'</span><div class="helps">'+t.helps+'</div><p>'+t.how+'</p></div><div id="bx"></div></div>';
+  breathUI($('#bx',m),t,{});
+}};
+
+/* ---------- GROUND ---------- */
+var PMR=[
+ {t:'Get comfortable. We will squeeze each muscle group, then let go. Skip anything that hurts. Take one slow breath first.',s:8},
+ {t:'Hands: make two tight fists. Squeeze... squeeze...',s:6},{t:'Let go. Let your fingers go soft and heavy. Notice the difference.',s:12},
+ {t:'Arms: bend your elbows and tighten your arms. Hold it...',s:6},{t:'Let them drop. Heavy and loose.',s:12},
+ {t:'Shoulders: lift them up toward your ears. Higher... hold...',s:6},{t:'Drop them. Let all the tension fall away.',s:12},
+ {t:'Face: scrunch up your whole face, eyes and jaw. Hold...',s:6},{t:'Release. Let your jaw hang slightly open and your forehead smooth out.',s:12},
+ {t:'Belly: tighten your stomach like someone is about to poke it. Hold...',s:6},{t:'Let go. Let your belly be soft. Breathe low and slow.',s:12},
+ {t:'Legs and feet: press your feet down and tighten your legs. Hold...',s:6},{t:'Let go. Feel your legs get heavy and warm.',s:12},
+ {t:'Now your whole body is loose. Take one slow breath in... and a long breath out.',s:12}
+];
+S.ground={title:'Ground yourself',render:function(m){
+  m.innerHTML='<p>Grounding pulls your attention out of the scary thoughts and back into the room, where you are safe.</p>'+
+  '<button class="card click" data-go="g54321"><h3>👀 5-4-3-2-1</h3><div class="helps">Helps when your thoughts are spinning or things feel unreal.</div></button>'+
+  '<button class="card click" data-go="session" data-arg="pmr"><h3>💪 Squeeze &amp; release (about 3 min)</h3><div class="helps">Helps when your body feels tense and shaky. Tensing then relaxing teaches your muscles how to let go.</div></button>'+
+  '<h2>Quick tricks</h2>'+
+  '<div class="card"><p>🦶 <b>Feel your feet.</b> Press them into the floor. Notice the floor holding you up.</p><p>🙌 <b>Press your palms together</b> hard for 10 seconds, then let go and shake out your hands.</p><p>💧 <b>Cool water.</b> Splash it on your face or hold your wrists under the cold tap. Cool water on the face can slow your heart rate.</p><p>🔢 <b>Count backward</b> from 100 by 3s. Your thinking brain cannot do that and panic at full volume at the same time.</p><p>🎨 <b>Colors.</b> Name everything blue you can see. Then everything green.</p><p>🎬 <b>Narrate.</b> Describe the room out loud like a nature-documentary host.</p><p>🫳 <b>Hold something</b> with a texture (a blanket, a stone, a pet) and describe exactly how it feels.</p><p>🥤 <b>Sip water slowly.</b></p></div>';
+}};
+S.g54321={title:'5-4-3-2-1',render:function(m){groundUI(m)}};
+
+/* ---------- MEDITATE ---------- */
+var SESS={
+ pmr:{title:'Squeeze & release',intro:'Sit or lie down. Press Start.',steps:PMR,end:'Your body is softer now. Nice work.'},
+ one:{title:'1-Minute Reset',intro:'The shortest meditation there is. Press Start.',end:'That was a real meditation.',steps:[
+  {t:'Sit comfortably. Let your hands rest. Close your eyes, or look softly at the floor.',s:8},
+  {t:'Feel your feet on the floor. Feel the chair holding your weight.',s:10},
+  {t:'Take a slow breath in... and a slow breath out.',s:10},
+  {t:'Again. In... and out. Let your shoulders drop.',s:10},
+  {t:'Listen for one sound around you. Just listen, you do not need to name it.',s:12},
+  {t:'One more slow breath. Then open your eyes when you are ready.',s:10}]},
+ anchor:{title:'Breath Anchor (3 min)',intro:'Your breath is your anchor. When your mind wanders, you come back to it. Press Start.',end:'Every time you came back, that was the exercise working.',steps:[
+  {t:'Sit comfortably and let your eyes close. Let your body be heavy.',s:12},
+  {t:'Do not change your breathing. Just notice it. Where do you feel it most? Nose, chest, or belly?',s:20},
+  {t:'Count each breath out. In... out, one. In... out, two. Keep going up to ten.',s:30},
+  {t:'If you lose count or drift off into a thought, that is normal. Gently begin again at one.',s:30},
+  {t:'Keep counting. No hurry, no goal.',s:30},
+  {t:'Thoughts are like clouds passing. You do not have to chase them or push them away. Back to the breath.',s:25},
+  {t:'Now just rest in your breathing without counting.',s:20},
+  {t:'Wiggle your fingers and toes. Open your eyes when ready.',s:10}]},
+ body:{title:'Body Scan (5 min)',intro:'Lie down or sit back. Press Start.',end:'You have visited your whole body, and it is okay.',steps:[
+  {t:'Close your eyes. Take three slow breaths. Each breath out, sink a little deeper.',s:20},
+  {t:'Bring your attention to your feet. Notice them. Warm, cool, tingly, or nothing. Whatever is there is okay.',s:25},
+  {t:'Move up to your legs. Let them feel heavy.',s:25},
+  {t:'Notice your belly. Let it rise and fall without forcing it.',s:25},
+  {t:'Notice your chest. If your heart is beating hard, thank it for working. Just notice, without fixing.',s:30},
+  {t:'Hands and arms. Let your fingers uncurl.',s:25},
+  {t:'Shoulders and neck. Let them drop away from your ears.',s:25},
+  {t:'Face. Soften your jaw, your eyes, your forehead.',s:25},
+  {t:'Now feel your whole body at once, resting and held.',s:30},
+  {t:'Take a deeper breath. Slowly come back and open your eyes.',s:15}]},
+ wave:{title:'Riding the Wave (4 min)',intro:'For when scary sensations are showing up. Instead of fighting them, we float. Press Start.',end:'You rode it out. That is a real skill, and you just used it.',steps:[
+  {t:'Sit with your feet on the floor. Take a slow breath.',s:15},
+  {t:'Notice what you feel in your body right now. Do not fight it. Just notice: "That is my heart pounding." "That is my chest feeling tight."',s:30},
+  {t:'Say to yourself: "This is a wave of adrenaline. It is uncomfortable, but it is not dangerous."',s:25},
+  {t:'Imagine the feeling as an ocean wave. It rises... it swells... and every wave, without exception, reaches its top.',s:30},
+  {t:'Keep breathing slowly. You are a surfer on the wave. You do not have to push it away.',s:30},
+  {t:'Notice it start to change. Maybe it shifts, softens, moves around. Waves always change.',s:30},
+  {t:'It is falling now, or it will be soon. Keep breathing out slowly.',s:30},
+  {t:'Whatever is left, let it be there. You are bigger than the wave.',s:25},
+  {t:'Take a slow breath and notice: you are still here. You always are.',s:15}]},
+ safe:{title:'My Safe Place (4 min)',intro:'You will picture a place where you feel completely safe. Press Start.',end:'You can come back to this place any time, in under a minute.',steps:[
+  {t:'Close your eyes. Take two slow breaths.',s:15},
+  {t:'Picture a place where you feel totally safe. It can be real or imaginary: a beach, a cozy room, a forest, your bed.',s:30},
+  {t:'What do you see there? Notice the colors and the light.',s:25},
+  {t:'What do you hear? Maybe waves, rain, quiet, soft music.',s:25},
+  {t:'What can you feel? The temperature, a soft blanket, sun on your skin.',s:25},
+  {t:'Is there a smell? Fresh air, something baking, flowers.',s:25},
+  {t:'Feel how safe your body is here. Nothing is asked of you. You can just be.',s:30},
+  {t:'Breathe in the feeling of safe. Breathe out any worry.',s:30},
+  {t:'Whenever you want, you can return here. Take a breath and slowly come back to the room.',s:20}]},
+ kind:{title:'Rest in God\'s Love (3 min)',intro:'You are loved, held and not alone. Press Start.',end:'Amen. You are loved, and you are held.',steps:[
+  {t:'Put a hand on your heart and take a slow breath.',s:15},
+  {t:'Picture yourself being held safely in the hands of a loving Father who is never in a hurry and never afraid.',s:25},
+  {t:'Say quietly: "God loves me."',s:25},
+  {t:'"I am not alone."',s:25},
+  {t:'"He is bigger than my fear."',s:25},
+  {t:'"This feeling will pass, and He is with me in it."',s:30},
+  {t:'Think of someone you love. Pray for them: "God, keep them safe and give them peace."',s:25},
+  {t:'One last slow breath. Thank Him. Amen.',s:10}]},
+ verse:{title:'Think on These Things (3 min)',intro:'A Bible meditation from Philippians 4:8. It turns your thoughts toward what is good. Press Start.',end:'Amen. Keep your mind on what is true and good.',steps:[
+  {t:'Take a slow breath. Read this verse slowly: "Whatsoever things are true... whatsoever things are lovely... think on these things." Philippians 4:8',s:25},
+  {t:'TRUE: What is one thing that is true right now? "I am safe in this moment. I am loved. This will pass."',s:30},
+  {t:'LOVELY: Picture something lovely. A sunrise, a pet, someone laughing, a quiet beach.',s:30},
+  {t:'GOOD: Think of one good thing about your day, or about you.',s:30},
+  {t:'PURE and PRAISEWORTHY: Think of someone you admire or something you are thankful for.',s:30},
+  {t:'Thank God for each of those things, quietly, in your own words.',s:25},
+  {t:'Breathe in peace. Breathe out worry. Amen.',s:10}]},
+ lectio:{title:'Lectio Divina: Psalm 46 (4 min)',intro:'An ancient Christian way of praying with Scripture: read, reflect, respond, rest. Press Start.',end:'Amen. You can do this with any verse.',steps:[
+  {t:'READ. Slowly read: "Be still, and know that I am God." Psalm 46:10',s:25},
+  {t:'Read it again, even more slowly. Notice which word stands out to you.',s:30},
+  {t:'REFLECT. Why that word? What might God be saying to you through it right now?',s:40},
+  {t:'RESPOND. Talk to God honestly about whatever came up. Tell Him what you feel.',s:45},
+  {t:'REST. Sit in silence. You do not have to say anything. Just be with Him.',s:50},
+  {t:'Say the verse once more, slowly: "Be still, and know that I am God." Amen.',s:20}]},
+ thanks:{title:'Thankful Review (3 min)',intro:'A calm end-of-day prayer. Good at bedtime. Press Start.',end:'Rest well. Amen.',steps:[
+  {t:'Get comfortable. Take three slow breaths.',s:20},
+  {t:'Think back over today. Replay it like a movie.',s:25},
+  {t:'Find three good things, even small ones. Thank God for each one.',s:35},
+  {t:'Was there a moment you felt scared or upset? Tell God about it. He understands.',s:30},
+  {t:'Now hand over any worries about tomorrow. They are His to carry tonight.',s:30},
+  {t:'"I will both lay me down in peace, and sleep: for thou, LORD, only makest me to dwell in safety." Psalm 4:8',s:25},
+  {t:'Breathe slowly. Rest in His peace. Amen.',s:10}]},
+ stillgod:{title:'Be Still with God (3 min)',intro:'A quiet prayer meditation. Press Start.',end:'Amen. You are not alone.',steps:[
+  {t:'Sit still. Breathe slowly. Place a hand on your heart.',s:15},
+  {t:'Silently say: "God, I am here."',s:20},
+  {t:'Tell Him exactly how you feel, in plain words. He is not shocked by it. ("I am scared. My body feels out of control.")',s:35},
+  {t:'Now breathe, and imagine handing that fear over to Him, like setting down a heavy bag.',s:30},
+  {t:'"Be still, and know that I am God." Psalm 46:10. Rest in that for a moment.',s:30},
+  {t:'"Peace I leave with you, my peace I give unto you." John 14:27. Breathe in peace.',s:30},
+  {t:'Breathe out the fear. Breathe in His peace.',s:25},
+  {t:'Thank Him for being with you. Amen.',s:10}]},
+ ps23:{title:'Psalm 23, slowly',intro:'Read each line slowly. Breathe between them. Press Start.',end:'Surely goodness and mercy shall follow me. Amen.',steps:[
+  {t:'The LORD is my shepherd; I shall not want.',s:18},
+  {t:'He maketh me to lie down in green pastures: he leadeth me beside the still waters.',s:22},
+  {t:'He restoreth my soul: he leadeth me in the paths of righteousness for his name\'s sake.',s:22},
+  {t:'Yea, though I walk through the valley of the shadow of death, I will fear no evil: for thou art with me; thy rod and thy staff they comfort me.',s:30},
+  {t:'Thou preparest a table before me in the presence of mine enemies: thou anointest my head with oil; my cup runneth over.',s:25},
+  {t:'Surely goodness and mercy shall follow me all the days of my life: and I will dwell in the house of the LORD for ever.',s:25},
+  {t:'Take a slow breath. You are held.',s:12}]}
+};
+S.meditate={title:'Meditate',render:function(m){
+  m.innerHTML='<p>Meditation is just practicing paying attention, calmly and on purpose. That is all. You cannot be bad at it.</p>'+
+  '<div class="note">Everything in here is either simple calm-focus practice (breathing, noticing your body) or Christian meditation on God and His Word. Nothing asks you to empty your mind, chant, or call on anything other than God. If anything ever doesn\'t sit right with your faith, skip it and talk to your parents or pastor.</div>'+
+  '<h2>Learn how</h2>'+
+  '<details><summary>1. What meditation is (and is not)</summary><div><p>It is <b>not</b> emptying your mind, and it is not sitting perfectly still for an hour. It is practicing steady, kind attention to what is happening right now, or to God and His Word. Your mind will wander. That is normal. Noticing and coming back is the whole workout.</p></div></details>'+
+  '<details><summary>2. Meditation in the Bible</summary><div><p>The Bible actually talks about meditating, and it always means <b>filling</b> your mind with God\'s truth, not emptying it.</p><div class="verse">But his delight is in the law of the LORD; and in his law doth he meditate day and night.<b>Psalm 1:2 (KJV)</b></div><div class="verse">When I remember thee upon my bed, and meditate on thee in the night watches.<b>Psalm 63:6 (KJV)</b></div><div class="verse">Let the words of my mouth, and the meditation of my heart, be acceptable in thy sight, O LORD, my strength, and my redeemer.<b>Psalm 19:14 (KJV)</b></div><p>So Christian meditation is quietly thinking about a verse, a truth about God, or His goodness, and talking with Him about it.</p></div></details>'+
+  '<details><summary>3. Get comfortable</summary><div><p>Sit in a chair with feet flat, or lie down. Let your hands rest. Close your eyes, or look softly at one spot on the floor. Nothing has to look a certain way. Start with just one minute.</p></div></details>'+
+  '<details><summary>4. Pick an anchor</summary><div><p>An anchor is something simple to pay attention to. The easiest is your breath: air at your nostrils, or your belly rising and falling. Or use a short prayer or a single verse, like "Be still, and know that I am God."</p></div></details>'+
+  '<details><summary>5. When your mind wanders</summary><div><p>It will, hundreds of times. When you notice you drifted, you did the thing. Quietly say "thinking" and gently return to your anchor. No scolding. Each return is like a bicep curl for your attention.</p></div></details>'+
+  '<details><summary>6. When scary feelings show up</summary><div><p>Try <b>R-A-I-N</b>: <b>R</b>ecognize ("this is fear"), <b>A</b>llow it to be there for now, <b>I</b>nvestigate kindly (where do I feel it in my body?), <b>N</b>urture yourself (hand on heart, a kind word, a short prayer). Try "Riding the Wave" below.</p></div></details>'+
+  '<details><summary>7. Take your thoughts to God</summary><div><p>When a scary thought loops, you can do what Philippians 4:6 says: turn it into a prayer. "God, I am scared of ___. Please help me." Then breathe out slowly and let it go.</p><div class="verse">Casting all your care upon him; for he careth for you.<b>1 Peter 5:7 (KJV)</b></div></div></details>'+
+  '<details><summary>8. Make it a habit</summary><div><p>A little every day beats a lot once. Try the same time daily, like before bed. Practice while you are okay, so the skill is ready when you are not.</p></div></details>'+
+  '<h2>Calm and focus</h2>'+
+  ['one','anchor','body','wave','safe'].map(function(k){var s=SESS[k];return '<button class="card click" data-go="session" data-arg="'+k+'"><h3>'+s.title+'</h3></button>'}).join('')+
+  '<h2>Meditating with God</h2>'+
+  ['stillgod','kind','verse','lectio','ps23','thanks'].map(function(k){var s=SESS[k];return '<button class="card click" data-go="session" data-arg="'+k+'"><h3>'+s.title+'</h3></button>'}).join('');
+}};
+S.session={title:function(a){return SESS[a].title},render:function(m,k){guided(m,SESS[k])}};
+
+/* ---------- PRAY ---------- */
+var PRAYERS=[
+ ['When I\'m scared right now','Jesus, I\'m scared and my body feels out of control. You are right here with me. Hold me steady. Slow my heart, slow my breathing, quiet my thoughts. I don\'t have to figure everything out tonight. I only have to take the next breath, and You are in this breath with me. Amen.'],
+ ['When I\'m afraid of dying','God, You made me and You hold my life in Your hands. My mind keeps shouting that something terrible is about to happen. Help me tell the difference between a loud alarm and real danger. Remind me that nothing can separate me from Your love, not even my biggest fears. Give me courage to live today without fear running the show. Amen.'],
+ ['For a calm body','Lord, thank You for my body. Thank You for my heart that keeps beating and my lungs that keep breathing, even when I\'m not thinking about them. Calm the alarm that\'s going off inside me. Let my shoulders drop, my hands unclench, and my breathing slow. Fill me with Your peace. Amen.'],
+ ['Handing the worries over','Father, I\'m carrying thoughts that are too heavy for me. I\'m handing them to You now, one by one. Take the "what ifs." Take the things I can\'t control. Take the things I\'m afraid to say out loud. You care for me, so I can set them down. Amen.'],
+ ['For bedtime','Lord, the day is done. Thank You for the good things in it, even the small ones. Whatever is still bothering me, I leave with You. Keep watch while I sleep. I lie down in peace, because You keep me safe. Amen.'],
+ ['Thank You (after it passes)','God, it passed again. Thank You for staying with me through it. Thank You for the people who love me. Help me remember, the next time I\'m scared, that waves always come down. I\'m still here, and You are still here. Amen.'],
+ ['The Lord\'s Prayer (KJV)','Our Father which art in heaven, Hallowed be thy name. Thy kingdom come, Thy will be done in earth, as it is in heaven. Give us this day our daily bread. And forgive us our debts, as we forgive our debtors. And lead us not into temptation, but deliver us from evil: For thine is the kingdom, and the power, and the glory, for ever. Amen.']
+];
+var VERSES=[
+ ['Philippians 4:6-7','Be careful for nothing; but in every thing by prayer and supplication with thanksgiving let your requests be made known unto God. And the peace of God, which passeth all understanding, shall keep your hearts and minds through Christ Jesus.'],
+ ['Isaiah 41:10','Fear thou not; for I am with thee: be not dismayed; for I am thy God: I will strengthen thee; yea, I will help thee; yea, I will uphold thee with the right hand of my righteousness.'],
+ ['2 Timothy 1:7','For God hath not given us the spirit of fear; but of power, and of love, and of a sound mind.'],
+ ['Psalm 56:3','What time I am afraid, I will trust in thee.'],
+ ['John 14:27','Peace I leave with you, my peace I give unto you: not as the world giveth, give I unto you. Let not your heart be troubled, neither let it be afraid.'],
+ ['Psalm 94:19','In the multitude of my thoughts within me thy comforts delight my soul.'],
+ ['Psalm 34:4','I sought the LORD, and he heard me, and delivered me from all my fears.'],
+ ['1 Peter 5:7','Casting all your care upon him; for he careth for you.'],
+ ['Matthew 11:28','Come unto me, all ye that labour and are heavy laden, and I will give you rest.'],
+ ['Psalm 4:8','I will both lay me down in peace, and sleep: for thou, LORD, only makest me to dwell in safety.'],
+ ['Joshua 1:9','Have not I commanded thee? Be strong and of a good courage; be not afraid, neither be thou dismayed: for the LORD thy God is with thee whithersoever thou goest.']
+];
+var VERSES_DEATH=[
+ ['Psalm 23:4','Yea, though I walk through the valley of the shadow of death, I will fear no evil: for thou art with me; thy rod and thy staff they comfort me.'],
+ ['John 14:1-3','Let not your heart be troubled: ye believe in God, believe also in me. In my Father\'s house are many mansions: if it were not so, I would have told you. I go to prepare a place for you. And if I go and prepare a place for you, I will come again, and receive you unto myself; that where I am, there ye may be also.'],
+ ['John 11:25-26','Jesus said unto her, I am the resurrection, and the life: he that believeth in me, though he were dead, yet shall he live: And whosoever liveth and believeth in me shall never die.'],
+ ['Romans 8:38-39','For I am persuaded, that neither death, nor life, nor angels, nor principalities, nor powers, nor things present, nor things to come, Nor height, nor depth, nor any other creature, shall be able to separate us from the love of God, which is in Christ Jesus our Lord.']
+];
+function verseHTML(v){return '<div class="verse">'+esc(v[1])+'<b>'+v[0]+' (KJV)</b></div>'}
+S.pray={title:'Pray',render:function(m){
+  var own=store.get('ownprayer','');
+  m.innerHTML='<p>Prayer can be a quiet place to bring your fear. You do not need fancy words. Tell God exactly how you feel.</p>'+
+  '<h2>Breath prayers</h2><p class="mut">Slow breathing plus a short prayer, so your body and your heart settle together.</p>'+
+  BPRAYER.map(function(t){return '<button class="card click" data-go="breathe_do" data-arg="'+t.id+'"><h3>'+t.emoji+' '+esc(t.name)+'</h3><small>'+t.tag+'</small></button>'}).join('')+
+  '<h2>Guided</h2>'+
+  '<button class="card click" data-go="session" data-arg="stillgod"><h3>🕊️ Be Still with God (3 min)</h3></button>'+
+  '<button class="card click" data-go="session" data-arg="ps23"><h3>📖 Psalm 23, slowly (2 min)</h3></button>'+
+  '<button class="card click" data-go="session" data-arg="kind"><h3>🤍 Rest in God\'s Love (3 min)</h3></button>'+
+  '<button class="card click" data-go="session" data-arg="verse"><h3>🌅 Think on These Things (3 min)</h3></button>'+
+  '<button class="card click" data-go="session" data-arg="lectio"><h3>📜 Lectio Divina: Psalm 46 (4 min)</h3></button>'+
+  '<button class="card click" data-go="session" data-arg="thanks"><h3>🌙 Thankful Review (bedtime, 3 min)</h3></button>'+
+  '<h2>Prayers</h2>'+
+  PRAYERS.map(function(p){return '<details><summary>'+esc(p[0])+'</summary><div><p class="big">'+esc(p[1])+'</p></div></details>'}).join('')+
+  '<h2>Verses for fear</h2>'+VERSES.map(verseHTML).join('')+
+  '<h2>Verses about death and heaven</h2><p class="mut">For when the fear is about dying.</p>'+VERSES_DEATH.map(verseHTML).join('')+
+  '<h2>Your own prayer</h2><textarea id="op" placeholder="Write your own prayer here. It stays on this phone.">'+esc(own)+'</textarea>';
+  $('#op',m).oninput=function(e){store.set('ownprayer',e.target.value)};
+}};
+
+/* ---------- SOUNDS ---------- */
+var SND=null,sleepT=null,sndVol=.6;
+var SOUNDS=[['rain','🌧️','Rain'],['ocean','🌊','Ocean waves'],['wind','🍃','Soft wind'],['brown','🌫️','Deep calm noise'],['hum','🎵','Warm hum']];
+var nbuf={};
+function noiseBuf(type){
+  if(nbuf[type])return nbuf[type];
+  var a=ac(),len=a.sampleRate*4,b=a.createBuffer(1,len,a.sampleRate),d=b.getChannelData(0),last=0;
+  for(var i=0;i<len;i++){var w=Math.random()*2-1;if(type==='brown'){last=(last+.02*w)/1.02;d[i]=last*3.5}else d[i]=w}
+  nbuf[type]=b;return b;
+}
+function mkNoise(type){var a=ac(),s=a.createBufferSource();s.buffer=noiseBuf(type);s.loop=true;s.start();return s}
+function startSound(id){
+  var a=ac();stopSound(true);
+  var master=a.createGain();master.gain.value=0;master.connect(a.destination);
+  var srcs=[];
+  function lfo(freq,amt,target){var o=a.createOscillator(),g=a.createGain();o.frequency.value=freq;g.gain.value=amt;o.connect(g);g.connect(target);o.start();srcs.push(o)}
+  if(id==='rain'){
+    var n=mkNoise('white'),hp=a.createBiquadFilter(),lp=a.createBiquadFilter(),g=a.createGain();hp.type='highpass';hp.frequency.value=900;lp.type='lowpass';lp.frequency.value=7500;g.gain.value=.3;
+    n.connect(hp);hp.connect(lp);lp.connect(g);g.connect(master);srcs.push(n);
+    var n2=mkNoise('brown'),g2=a.createGain();g2.gain.value=.35;n2.connect(g2);g2.connect(master);srcs.push(n2);
+  }else if(id==='ocean'){
+    var n3=mkNoise('brown'),lp3=a.createBiquadFilter(),g3=a.createGain();lp3.type='lowpass';lp3.frequency.value=900;g3.gain.value=.5;
+    n3.connect(lp3);lp3.connect(g3);g3.connect(master);srcs.push(n3);lfo(.09,.4,g3.gain);
+    var n4=mkNoise('white'),hp4=a.createBiquadFilter(),g4=a.createGain();hp4.type='highpass';hp4.frequency.value=2500;g4.gain.value=.05;
+    n4.connect(hp4);hp4.connect(g4);g4.connect(master);srcs.push(n4);lfo(.09,.04,g4.gain);
+  }else if(id==='wind'){
+    var n5=mkNoise('white'),bp=a.createBiquadFilter(),g5=a.createGain();bp.type='bandpass';bp.frequency.value=500;bp.Q.value=.8;g5.gain.value=.5;
+    n5.connect(bp);bp.connect(g5);g5.connect(master);srcs.push(n5);lfo(.07,250,bp.frequency);lfo(.05,.25,g5.gain);
+  }else if(id==='brown'){
+    var n6=mkNoise('brown'),g6=a.createGain();g6.gain.value=.9;n6.connect(g6);g6.connect(master);srcs.push(n6);
+  }else{
+    [130.8,196,329.6].forEach(function(f,k){var o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.value=f+(k-1)*.4;g.gain.value=.22/(k+1);o.connect(g);g.connect(master);o.start();srcs.push(o);lfo(.05+k*.02,.06,g.gain)});
+  }
+  master.gain.linearRampToValueAtTime(sndVol,a.currentTime+1.5);
+  SND={id:id,master:master,srcs:srcs};updNP();
+}
+function stopSound(quiet){
+  if(!SND)return;var s=SND;SND=null;
+  try{var a=ac();s.master.gain.cancelScheduledValues(a.currentTime);s.master.gain.setValueAtTime(s.master.gain.value,a.currentTime);s.master.gain.linearRampToValueAtTime(0,a.currentTime+.6);
+    setTimeout(function(){s.srcs.forEach(function(x){try{x.stop()}catch(e){}});try{s.master.disconnect()}catch(e){}},750)}catch(e){}
+  clearTimeout(sleepT);if(!quiet)updNP();
+}
+function updNP(){
+  if(SND){var n=SOUNDS.filter(function(s){return s[0]===SND.id})[0];npBtn.style.display='block';npBtn.textContent=n[1]+' '+n[2]+' playing · tap to stop'}
+  else npBtn.style.display='none';
+}
+npBtn.onclick=function(){stopSound();if(cur&&cur.name==='sounds')paint()};
+S.sounds={title:'Calm sounds',render:function(m){
+  m.innerHTML='<p>Pick a sound. It keeps playing while you use other parts of the app, until you stop it.</p><div class="sgrid">'+
+  SOUNDS.map(function(s){return '<button class="sbtn'+(SND&&SND.id===s[0]?' on':'')+'" data-id="'+s[0]+'"><span>'+s[1]+'</span>'+s[2]+'</button>'}).join('')+
+  '</div><h2>Volume</h2><input type="range" id="vol" min="0.05" max="1" step="0.05" value="'+sndVol+'">'+
+  '<h2>Turn off after</h2><div class="row"><button class="chip" data-t="15">15 min</button><button class="chip" data-t="30">30 min</button><button class="chip" data-t="60">1 hour</button><button class="chip" data-t="0">Never</button></div><p class="mut" id="tm"></p>'+
+  '<div class="row"><button class="btn" id="stp">Stop sound</button></div>';
+  m.querySelectorAll('.sbtn').forEach(function(b){b.onclick=function(){
+    if(SND&&SND.id===b.dataset.id){stopSound()}else{startSound(b.dataset.id)}
+    paint();
+  }});
+  $('#vol',m).oninput=function(e){sndVol=+e.target.value;if(SND){try{SND.master.gain.setTargetAtTime(sndVol,ac().currentTime,.1)}catch(x){}}};
+  m.querySelectorAll('.chip').forEach(function(b){b.onclick=function(){
+    clearTimeout(sleepT);var t=+b.dataset.t;
+    m.querySelectorAll('.chip').forEach(function(c){c.classList.remove('on')});b.classList.add('on');
+    if(t>0){sleepT=setTimeout(function(){stopSound();if(cur&&cur.name==='sounds')paint()},t*60000);$('#tm',m).textContent='Sound will fade out in '+t+' minutes.'}else $('#tm',m).textContent='';
+  }});
+  $('#stp',m).onclick=function(){stopSound();paint()};
+}};
+
+/* ---------- GAMES ---------- */
+S.games={title:'Games',render:function(m){
+  m.innerHTML='<p>Sometimes the best thing for a panic wave is giving your brain something else to chew on. No timers, no scores, no pressure.</p>'+
+  '<button class="card click" data-go="forest"><h3>🌲 The Quiet Forest</h3><div class="helps">A text adventure. Wander, explore, and solve the little mystery.</div></button>'+
+  '<button class="card click" data-go="wordgame"><h3>🔤 Mystery Word</h3><div class="helps">Guess the secret 5-letter word in 6 tries. Green means right spot, yellow means wrong spot.</div></button>'+
+  '<button class="card click" data-go="scramble"><h3>🔀 Word Scramble</h3><div class="helps">Unscramble calming words. There are hints, and no losing.</div></button>'+
+  '<button class="card click" data-go="pet"><h3>🐣 Pet buddy</h3><div class="helps">Hatch an egg and raise a creature. It can never die.</div></button>'+
+  '<button class="card click" data-go="memory"><h3>🃏 Memory Match</h3><div class="helps">Flip cards and find the matching animal pairs.</div></button>'+
+  '<button class="card click" data-go="fireflies"><h3>✨ Firefly Jar</h3><div class="helps">Catch glowing fireflies. Very peaceful.</div></button>'+
+  '<button class="card click" data-go="echo"><h3>🎵 Pattern Echo</h3><div class="helps">Watch the lights and tones, then copy them.</div></button>'+
+  '<button class="card click" data-go="purr"><h3>😺 Purr Counter</h3><div class="helps">Pet the kitty. That is the whole game.</div></button>'+
+  '<button class="card click" data-go="jokes"><h3>😂 Dad jokes</h3><div class="helps">Tap to reveal the punchline.</div></button>'+
+  '<button class="card click" data-go="bubbles"><h3>🫧 Bubble pop</h3><div class="helps">Pop the bubbles. Surprisingly satisfying.</div></button>'+
+  '<button class="card click" data-go="draw"><h3>🎨 Mandala drawing</h3><div class="helps">Draw and watch it mirror into patterns.</div></button>';
+}};
+
+/* Mystery Word */
+var WORDS5='peace brave heart light dream cloud sleep quiet smile happy sunny ocean river stone water grace faith trust truth still bloom field flame fresh honey lemon night pearl plant pride robin shine solar spark storm sweet tiger tulip voice waves wheat world youth angel beach birch bread candy chair clear daisy eagle earth float frost gleam green guide haven house ivory jolly laugh lucky magic melon music north olive panda piano quest relax ridge scent sheep sloth snail spoon sugar swing teach thank toast trail whale windy cozy-x moose lilac grape peach apple mango berry cream dance ember fable giant glide grove happy jelly koala lunar maple noble plain rainy shade shore sleepy-x tidal unity vivid wooly zebra'.split(' ').filter(function(w){return /^[a-z]{5}$/.test(w)});
+S.wordgame={title:'Mystery Word',render:function(m){
+  var target,rows,curr,over,msg,keys;
+  function newGame(){target=WORDS5[Math.floor(Math.random()*WORDS5.length)];rows=[];curr='';over=false;msg='';keys={}}
+  function score(g){
+    var r=[],t=target.split(''),i;
+    for(i=0;i<5;i++)r[i]='x';
+    for(i=0;i<5;i++)if(g[i]===t[i]){r[i]='g';t[i]=null}
+    for(i=0;i<5;i++)if(r[i]==='x'){var k=t.indexOf(g[i]);if(k>-1){r[i]='y';t[k]=null}}
+    return r;
+  }
+  function draw(){
+    var h='<div class="wg">';
+    for(var r=0;r<6;r++){
+      h+='<div class="wrow">';
+      for(var c=0;c<5;c++){
+        var ch='',cl='wc';
+        if(r<rows.length){ch=rows[r].g[c];cl+=' '+rows[r].s[c]}
+        else if(r===rows.length&&!over){ch=curr[c]||'';if(ch)cl+=' f'}
+        h+='<div class="'+cl+'">'+ch+'</div>';
+      }
+      h+='</div>';
+    }
+    h+='<div class="msg">'+msg+'</div><div class="kb">';
+    ['qwertyuiop','asdfghjkl','+zxcvbnm-'].forEach(function(row){
+      h+='<div class="kr">';
+      row.split('').forEach(function(k){
+        if(k==='+')h+='<button class="k w" data-k="enter">Enter</button>';
+        else if(k==='-')h+='<button class="k w" data-k="back">⌫</button>';
+        else h+='<button class="k '+(keys[k]||'')+'" data-k="'+k+'">'+k+'</button>';
+      });
+      h+='</div>';
+    });
+    h+='</div><div class="row center"><button class="btn" id="hint">💡 Hint</button><button class="btn" id="newg">New word</button></div></div>';
+    m.innerHTML=h;
+    m.querySelectorAll('.k').forEach(function(b){b.onclick=function(){press(b.dataset.k)}});
+    $('#hint',m).onclick=function(){
+      if(over)return;
+      var g=rows.map(function(r){return r.g}).join('');
+      var cand=target.split('').filter(function(l){return g.indexOf(l)<0});
+      msg=cand.length?('The word has the letter "'+cand[0].toUpperCase()+'".'):'You have found all the letters. Try rearranging!';draw();
+    };
+    $('#newg',m).onclick=function(){newGame();draw()};
+  }
+  function press(k){
+    if(over)return;blip(440);
+    if(k==='back'){curr=curr.slice(0,-1)}
+    else if(k==='enter'){
+      if(curr.length<5){msg='Needs 5 letters';draw();return}
+      var s=score(curr);rows.push({g:curr,s:s});
+      for(var i=0;i<5;i++){var l=curr[i],p=keys[l],n=s[i];if(p==='g')continue;if(p==='y'&&n!=='g')continue;keys[l]=n}
+      if(curr===target){over=true;msg='🎉 You got it! The word was '+target.toUpperCase();chime(528)}
+      else if(rows.length>=6){over=true;msg='The word was '+target.toUpperCase()+'. No worries! Try a new one.'}
+      else msg='';
+      curr='';
+    }else if(curr.length<5){curr+=k;msg=''}
+    draw();
+  }
+  function kd(e){
+    if(e.ctrlKey||e.metaKey||e.altKey)return;
+    if(e.key==='Enter')press('enter');else if(e.key==='Backspace')press('back');else if(/^[a-zA-Z]$/.test(e.key))press(e.key.toLowerCase());
+  }
+  document.addEventListener('keydown',kd);onLeave(function(){document.removeEventListener('keydown',kd)});
+  newGame();draw();
+}};
+
+/* Word Scramble */
+var SCR=[['peaceful','a feeling of calm'],['breathe','you are doing this right now'],['sunrise','the start of a new day'],['forest','a place with many trees'],['comfort','what a warm blanket gives'],['harmony','things fitting together nicely'],['blanket','cozy thing on your bed'],['lantern','a light you carry'],['courage','being brave even when scared'],['rainbow','appears after rain'],['whisper','a very quiet voice'],['steady','not shaky'],['gentle','soft and kind'],['meadow','a grassy field'],['serene','calm and peaceful'],['cuddle','a snuggly hug'],['stillness','quiet with no movement'],['lullaby','a song to help you sleep'],['starlight','light from far away'],['tranquil','very calm']];
+S.scramble={title:'Word Scramble',render:function(m){
+  var item,tiles,ans,msg,idx=-1;
+  function shuffle(w){var a=w.split(''),t=0;do{for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var x=a[i];a[i]=a[j];a[j]=x}t++}while(a.join('')===w&&t<20);return a}
+  function next(){idx=(idx+1+Math.floor(Math.random()*5))%SCR.length;item=SCR[idx];tiles=shuffle(item[0]).map(function(c){return {c:c,u:false}});ans=[];msg=''}
+  function draw(){
+    m.innerHTML='<p style="text-align:center">Clue: <b>'+item[1]+'</b> ('+item[0].length+' letters)</p>'+
+    '<div class="tiles">'+(ans.length?ans.map(function(t,i){return '<button class="tl ans" data-a="'+i+'">'+t.c+'</button>'}).join(''):'<span class="mut">Tap letters below</span>')+'</div>'+
+    '<div class="msg">'+msg+'</div>'+
+    '<div class="tiles">'+tiles.map(function(t,i){return '<button class="tl'+(t.u?' used':'')+'" data-t="'+i+'">'+t.c+'</button>'}).join('')+'</div>'+
+    '<div class="row center"><button class="btn" id="hint">💡 Hint</button><button class="btn" id="clr">Clear</button><button class="btn" id="skp">Skip ▶</button></div>';
+    m.querySelectorAll('[data-t]').forEach(function(b){b.onclick=function(){
+      var i=+b.dataset.t;if(tiles[i].u)return;tiles[i].u=true;ans.push({c:tiles[i].c,i:i});blip(500);
+      if(ans.length===item[0].length){
+        if(ans.map(function(t){return t.c}).join('')===item[0]){msg='🎉 Yes! '+item[0].toUpperCase();chime(528);draw();setTimeout(function(){if(cur&&cur.name==='scramble'){next();draw()}},1800);return}
+        else msg='Not quite. Tap a letter to take it back.';
+      }
+      draw();
+    }});
+    m.querySelectorAll('[data-a]').forEach(function(b){b.onclick=function(){var i=+b.dataset.a;tiles[ans[i].i].u=false;ans.splice(i,1);msg='';draw()}});
+    $('#clr',m).onclick=function(){tiles.forEach(function(t){t.u=false});ans=[];msg='';draw()};
+    $('#skp',m).onclick=function(){next();draw()};
+    $('#hint',m).onclick=function(){msg='It starts with "'+item[0][0].toUpperCase()+'" and ends with "'+item[0].slice(-1).toUpperCase()+'".';draw()};
+  }
+  next();draw();
+}};
+
+/* Forest adventure */
+var AR={
+ clearing:{n:'The Clearing',d:'You are standing in a quiet forest clearing. Soft light falls through the leaves, and somewhere a bird is singing. Paths lead north, south, east and west.',x:{n:'OUT',s:'brook',e:'mush',w:'oak'}},
+ brook:{n:'The Brook',d:'A shallow brook chatters over smooth stones. The water is clear and cool. The clearing is north. A pond lies to the west, a meadow to the east, and thick trees to the south.',x:{n:'clearing',w:'pond',e:'meadow',s:'OUT'}},
+ pond:{n:'The Pond',d:'A still, round pond with lily pads. A fat green frog sits on the biggest one, looking very important. The brook is east. A dark cave mouth opens to the north.',x:{e:'brook',n:'cave',w:'OUT',s:'OUT'}},
+ cave:{n:'The Echo Cave',d:'A small, cool cave. When you breathe out, you can hear it echo softly: shhhhh. It is very peaceful. The pond is back to the south.',x:{s:'pond'}},
+ meadow:{n:'The Meadow',d:'A wide meadow of tall grass and wildflowers swaying in the breeze. Butterflies drift by. Take a slow breath in the flower-scented air. The brook is west, and a ring of mushrooms is north.',x:{w:'brook',n:'mush',e:'OUT',s:'OUT'}},
+ mush:{n:'The Mushroom Ring',d:'A perfect circle of red mushrooms with white spots. Behind it, to the north, you see a small wooden cabin. The clearing is west, the meadow south.',x:{w:'clearing',s:'meadow',n:'cabin',e:'OUT'}},
+ cabin:{n:'The Little Cabin',d:'A tiny cabin that smells of cedar and old books. Dust floats in a beam of light. The way out is south.',x:{s:'mush'}},
+ oak:{n:'The Old Oak',d:'An enormous oak tree, wider than a car. High in its branches sits a tired-looking owl. A path leads north up a hill. The clearing is east.',x:{e:'clearing',n:'hill',w:'OUT',s:'OUT'}},
+ hill:{n:'The Hilltop',d:'From the top of the hill you can see the whole forest, gold in the evening light. The first stars are coming out. The oak is back to the south.',x:{s:'oak',n:'OUT',e:'OUT',w:'OUT'}}
+};
+var AI={coin:'a silver coin',glow:'a warm glowing stone',daisy:'a white daisy',key:'a rusty key',box:'a little music box'};
+S.forest={title:'The Quiet Forest',render:function(m){
+  var st,logEl;
+  function init(){st={at:'clearing',inv:[],items:{brook:['coin'],cave:['glow'],meadow:['daisy'],cabin:['box']},frog:false,open:false,won:false,prev:'clearing'}}
+  function say(t,cls){var p=document.createElement('p');if(cls)p.className=cls;p.innerHTML=t;logEl.appendChild(p);logEl.scrollTop=logEl.scrollHeight}
+  function look(){
+    var r=AR[st.at];say('<span class="rn">'+r.n+'</span><br>'+r.d);
+    if(st.at==='pond')say(st.frog?'The frog is happily admiring your coin.':'The frog stares at you. "Ribbit." It seems to be looking for something shiny.');
+    if(st.at==='oak')say(st.won?'The owl is gently humming along to the music.':'The owl sighs. "Hoo... I lost my music box, and I cannot sleep without its lullaby. I think I left it in the little cabin..."');
+    if(st.at==='mush'&&!st.open)say('The cabin door is shut tight.');
+    var it=st.items[st.at]||[];if(it.length&&!(st.at==='cabin'&&!st.open))say('You see: '+it.map(function(i){return AI[i]}).join(', ')+'.');
+  }
+  function mv(d){
+    var r=AR[st.at],t=r.x[d];
+    if(st.at==='outside'){return}
+    say('Go '+({n:'north',s:'south',e:'east',w:'west'}[d])+'.','you');
+    if(!t){say(st.at==='cave'?'Solid rock. You cannot go that way.':'The trees are too thick to pass that way.');return}
+    if(t==='OUT'){st.prev=st.at;st.at='outside';say('You walk and walk, and the trees thin out... <b>You have left the forest!</b> The road is quiet and the sky is turning pink. But your forest adventure is not finished yet. Want to go back in?');ui();return}
+    if(t==='cabin'&&!st.open){say('You wander up to the little cabin. The door is locked. You will need a key.');return}
+    st.at=t;look();ui();
+  }
+  function act(a,i){
+    if(a==='look'){look();return}
+    if(a==='inv'){say(st.inv.length?'You are carrying: '+st.inv.map(function(i){return AI[i]}).join(', ')+'.':'You are not carrying anything.');return}
+    if(a==='hint'){
+      var h;
+      if(st.won)h='You did it! Feel free to wander around and enjoy the forest.';
+      else if(st.inv.indexOf('box')>-1)h='Bring the music box to the old oak, to the west of the clearing.';
+      else if(st.open)h='The cabin is open. Go in through the mushroom ring, north, and take the music box.';
+      else if(st.inv.indexOf('key')>-1)h='Use the key at the mushroom ring, where you can see the cabin.';
+      else if(st.frog)h='The frog dropped a key! Pick it up at the pond.';
+      else if(st.inv.indexOf('coin')>-1)h='The frog at the pond west of the brook likes shiny things.';
+      else h='Talk to the owl at the old oak first, then look for something shiny near the water.';
+      say('💡 '+h);return}
+    if(a==='take'){var it=st.items[st.at];it.splice(it.indexOf(i),1);st.inv.push(i);blip(600);say('You pick up '+AI[i]+'.');ui();return}
+    if(a==='use'){
+      if(i==='coin'&&st.at==='pond'&&!st.frog){st.frog=true;st.inv.splice(st.inv.indexOf('coin'),1);st.inv.push('key');say('You toss the coin onto the lily pad. The frog\'s eyes go wide. "RIBBIT!" It snatches the coin, hops once, and plops a <b>rusty key</b> into your hand. It was hiding it under the lily pad all along!');chime(660,.08,1.5);ui();return}
+      if(i==='key'&&st.at==='mush'&&!st.open){st.open=true;st.inv.splice(st.inv.indexOf('key'),1);say('You walk to the cabin and turn the key. <b>Click.</b> The door swings open. You can go north now.');chime(660,.08,1.5);ui();return}
+      if(i==='box'&&st.at==='oak'&&!st.won){st.won=true;st.inv.splice(st.inv.indexOf('box'),1);say('You wind the little key on the music box and set it on a branch. A slow, soft lullaby begins to play. The owl closes his eyes and smiles. One by one, fireflies rise from the grass and the whole forest seems to breathe out. You feel calm, steady and safe.<br><br>✨ <b>THE END</b> ✨<br><br>(You can keep wandering, or play again.)');chime(528);ui();return}
+      if(i==='glow'){say('You hold the stone in both hands. It is warm, like a tiny sun. Your shoulders drop and you feel a little steadier.');return}
+      if(i==='daisy'){say('You hold the daisy close and breathe in slowly... then breathe out, even slower. That feels nice.');return}
+      say('Nothing happens here. Maybe try somewhere else.');
+    }
+  }
+  function ui(){
+    var c=$('#ctl',m);if(!c)return;
+    var at=st.at;
+    if(at==='outside'){c.innerHTML='<div class="acts"><button class="btn primary" id="reenter">🌲 Go back into the forest</button></div>';$('#reenter',m).onclick=function(){st.at=st.prev;say('You step back among the trees.','you');look();ui()};return}
+    var h='<div class="compass"><span></span><button data-d="n">N</button><span></span><button data-d="w">W</button><span></span><button data-d="e">E</button><span></span><button data-d="s">S</button><span></span></div><div class="acts">';
+    h+='<button class="btn" data-a="look">👁 Look</button><button class="btn" data-a="inv">🎒 Bag</button><button class="btn" data-a="hint">💡 Hint</button>';
+    var it=(st.items[at]||[]);if(!(at==='cabin'&&!st.open))it.forEach(function(i){h+='<button class="btn primary" data-a="take" data-i="'+i+'">Take '+AI[i].replace(/^an? /,'')+'</button>'});
+    st.inv.forEach(function(i){h+='<button class="btn" data-a="use" data-i="'+i+'">Use '+AI[i].replace(/^an? /,'')+'</button>'});
+    h+='<button class="btn ghost" data-a="restart">↺ Restart</button></div>';
+    c.innerHTML=h;
+    c.querySelectorAll('[data-d]').forEach(function(b){b.onclick=function(){mv(b.dataset.d)}});
+    c.querySelectorAll('[data-a]').forEach(function(b){b.onclick=function(){
+      if(b.dataset.a==='restart'){init();logEl.innerHTML='';say('You wake up in a quiet forest. An owl\'s voice drifts across the trees...');look();ui();return}
+      act(b.dataset.a,b.dataset.i)}});
+  }
+  m.innerHTML='<div class="alog" id="alog"></div><div id="ctl"></div>';
+  logEl=$('#alog',m);init();
+  say('You wake up in a quiet forest. Nothing is chasing you. Nothing is wrong. Use the N, S, E and W buttons to explore, and see what you can find.');
+  look();ui();
+}};
+
+/* ---------- DRAW & POP ---------- */
+S.relax={title:'Draw & pop',render:function(m){
+  m.innerHTML='<p>Doing something with your hands gives your nervous system somewhere to put the extra energy.</p>'+
+  '<button class="card click" data-go="draw"><h3>🎨 Mandala drawing</h3><div class="helps">Draw once and it mirrors around the circle into a pattern.</div></button>'+
+  '<button class="card click" data-go="bubbles"><h3>🫧 Bubble pop</h3><div class="helps">Pop the bubbles one by one.</div></button>';
+}};
+S.bubbles={title:'Bubble pop',render:function(m){
+  var N=40;
+  function fill(){
+    var h='<div class="bubs">';for(var i=0;i<N;i++)h+='<button class="bub" aria-label="bubble"></button>';
+    h+='</div><div class="row center"><button class="btn" id="fill">Refill bubbles</button></div><p class="mut" style="text-align:center">Breathe out slowly with every pop.</p>';
+    m.innerHTML=h;
+    var left=N;
+    m.querySelectorAll('.bub').forEach(function(b){b.onclick=function(){
+      if(b.classList.contains('p'))return;b.classList.add('p');blip(380+Math.random()*300);try{if(navigator.vibrate)navigator.vibrate(15)}catch(e){}
+      left--;if(left===0)setTimeout(fill,700);
+    }});
+    $('#fill',m).onclick=fill;
+  }
+  fill();
+}};
+S.draw={title:'Mandala drawing',render:function(m){
+  var COL=['#6ee7d8','#b9a8ff','#ffd8a0','#ff9db8','#8fb6ff','#ffffff'],col=COL[0],sym=8,mir=true;
+  var SZ=1000,drawing=false,lx=0,ly=0;
+  m.innerHTML='<canvas id="cv" width="'+SZ+'" height="'+SZ+'"></canvas><div class="row center" id="cols"></div><div class="row center"><button class="chip" data-s="6">6-fold</button><button class="chip on" data-s="8">8-fold</button><button class="chip" data-s="12">12-fold</button><button class="chip on" id="mirb">Mirror on</button></div><div class="row center"><button class="btn" id="clr">Clear</button></div>';
+  var cv=$('#cv',m),ctx=cv.getContext('2d');
+  function bg(){ctx.clearRect(0,0,SZ,SZ);ctx.strokeStyle='rgba(255,255,255,.07)';ctx.lineWidth=2;[120,260,400,480].forEach(function(r){ctx.beginPath();ctx.arc(SZ/2,SZ/2,r,0,Math.PI*2);ctx.stroke()})}
+  bg();
+  var cols=$('#cols',m);
+  COL.forEach(function(c,i){var b=document.createElement('button');b.className='sw'+(i===0?' on':'');b.style.background=c;b.onclick=function(){col=c;cols.querySelectorAll('.sw').forEach(function(x){x.classList.remove('on')});b.classList.add('on')};cols.appendChild(b)});
+  m.querySelectorAll('[data-s]').forEach(function(b){b.onclick=function(){sym=+b.dataset.s;m.querySelectorAll('[data-s]').forEach(function(x){x.classList.remove('on')});b.classList.add('on')}});
+  $('#mirb',m).onclick=function(e){mir=!mir;e.target.classList.toggle('on',mir);e.target.textContent=mir?'Mirror on':'Mirror off'};
+  $('#clr',m).onclick=bg;
+  function pos(e){var r=cv.getBoundingClientRect();return [(e.clientX-r.left)/r.width*SZ,(e.clientY-r.top)/r.height*SZ]}
+  function seg(x0,y0,x1,y1){
+    var c=SZ/2;ctx.strokeStyle=col;ctx.lineWidth=5;ctx.lineCap='round';ctx.shadowColor=col;ctx.shadowBlur=10;
+    for(var k=0;k<sym;k++){
+      var a=k*2*Math.PI/sym,ca=Math.cos(a),sa=Math.sin(a);
+      for(var f=0;f<(mir?2:1);f++){
+        var s=f?-1:1;
+        var ax=(x0-c)*s,ay=y0-c,bx=(x1-c)*s,by=y1-c;
+        ctx.beginPath();
+        ctx.moveTo(c+ax*ca-ay*sa,c+ax*sa+ay*ca);
+        ctx.lineTo(c+bx*ca-by*sa,c+bx*sa+by*ca);
+        ctx.stroke();
+      }
+    }
+    ctx.shadowBlur=0;
+  }
+  cv.addEventListener('pointerdown',function(e){drawing=true;var p=pos(e);lx=p[0];ly=p[1];try{cv.setPointerCapture(e.pointerId)}catch(x){}seg(lx,ly,lx+.1,ly+.1);e.preventDefault()});
+  cv.addEventListener('pointermove',function(e){if(!drawing)return;var p=pos(e);seg(lx,ly,p[0],p[1]);lx=p[0];ly=p[1];e.preventDefault()});
+  ['pointerup','pointercancel','pointerleave'].forEach(function(ev){cv.addEventListener(ev,function(){drawing=false})});
+}};
+
+/* ---------- WORRY JAR ---------- */
+S.worry={title:'Worry jar',render:function(m){
+  m.innerHTML='<p>Write down what your brain keeps looping on. Getting it out of your head and onto the screen makes it smaller. When you tap the button, it floats away. Nothing is saved.</p><textarea id="wt" placeholder="What is the worry?"></textarea><div class="row"><button class="btn primary full" id="wr">🎈 Let it go</button></div><p id="wm" class="msg"></p>'+
+  '<div class="card"><h3>Helpful questions</h3><p>Is this a <b>fact</b>, or a <b>what if</b>?<br>Is it happening <b>right now</b>?<br>What would I tell a friend who told me this?<br>Is there one tiny thing I can do about it, or is it something to hand over (to a parent, a counselor, or God)?</p></div>';
+  $('#wr',m).onclick=function(){
+    var t=$('#wt',m).value.trim();if(!t){$('#wm',m).textContent='Write something first, even just a word.';return}
+    var f=document.createElement('div');f.className='float';f.textContent=t.length>140?t.slice(0,140)+'...':t;document.body.appendChild(f);
+    setTimeout(function(){f.remove()},4600);
+    $('#wt',m).value='';chime(600,.06,2);
+    $('#wm',m).textContent=/pizza/i.test(t)?'🍕 Pizza is never a worry. Moving on.':'It is out of your head now. You can come back to it later if you want, or not.';
+  };
+}};
+
+/* ---------- UNDERSTAND ---------- */
+S.understand={title:'Understand panic',render:function(m){
+  m.innerHTML='<p>Knowing what is going on in your body takes away a lot of its power.</p>'+
+  '<details open><summary>😨 "What if I suddenly die?"</summary><div><p>This is one of the most common fears people have with anxiety, and having the thought does <b>not</b> mean it is going to happen. The anxious brain is a bad fortune-teller: it takes "what if" and makes it feel like "will".</p><p>You do not have to solve the big question tonight. When the thought shows up, try: <b>1)</b> Label it: "There is the what-if thought." <b>2)</b> Breathe out slowly. <b>3)</b> Put it in the Worry Jar or hand it over in a prayer. <b>4)</b> Do something else for a few minutes.</p><p>It is also worth telling a parent. Fear that has been around for years can really be helped, and you do not have to carry it alone.</p></div></details>'+
+  '<details><summary>🚨 What is a panic attack?</summary><div><p>It is your body\'s alarm system going off when there is no real danger. Your brain releases adrenaline, the same "fight or flight" chemical you would get if a bear walked in. Your heart pounds, your breathing speeds up, and you might feel dizzy, shaky, tingly, sweaty or like things are not real.</p></div></details>'+
+  '<details><summary>🫀 Why does it feel like dying?</summary><div><p>Every symptom is adrenaline doing its job: pounding heart, tight chest, fast breathing, dizziness. These feelings are intense and truly uncomfortable, but they are not harmful in themselves. They are the body getting ready to run, with nothing to run from.</p></div></details>'+
+  '<details><summary>🌊 How long does it last?</summary><div><p>Panic usually peaks within about 10 minutes and then fades, even though it can feel much longer. Adrenaline cannot keep rising forever. Every wave you have had so far has ended.</p></div></details>'+
+  '<details><summary>🔁 Why does it keep coming back?</summary><div><p>The "fear of the fear" loop: you feel a body sensation, get scared, the fear makes more adrenaline, and that makes the sensation stronger. Fighting the feeling feeds it. Floating through it, slowly breathing and letting it pass, is what teaches your brain that it is safe. That is why practicing the breathing and grounding tools matters.</p></div></details>'+
+  '<details><summary>💪 What actually helps long-term?</summary><div><p>Practicing calming skills while you are okay. Sleep, movement and not too much caffeine or energy drinks. Talking to someone. And counseling: a type of therapy called <b>CBT</b> is very effective for panic and for fears like this, and most people improve a lot.</p><p>It is also reasonable to have a doctor check you over once. It can rule out physical causes and gives many people real relief.</p></div></details>'+
+  '<h2>Things to tell yourself</h2><div class="card">'+SAYS.map(function(s){return '<p>💙 '+esc(s)+'</p>'}).join('')+'</div>';
+}};
+
+/* ---------- TALK TO SOMEONE ---------- */
+S.talk={title:'Talk to someone',render:function(m){
+  m.innerHTML='<div class="card big">You are not a burden. The people who love you want to know when you are scared. Telling someone is one of the strongest things you can do.</div>'+
+  '<h2>Who can I tell?</h2><div class="card"><p>👨‍👩‍👧 Mom or Dad. Even just: <b>"I am having a panic wave."</b></p><p>👩‍🏫 A school counselor or a teacher you trust</p><p>⛪ A pastor, youth leader or someone at church</p><p>👭 A friend you trust</p></div>'+
+  '<h2>Words you can use</h2><div class="card"><p>"I get really scared that I am going to suddenly die, and I have felt like this for a long time."</p><p>"I would like to talk to someone about my anxiety."</p></div>'+
+  '<h2>If you ever need help right away</h2>'+
+  '<div class="card"><p>📞 <b>Call or text 988</b> (US Suicide &amp; Crisis Lifeline). It is free, 24/7, and for any emotional crisis, not just emergencies.</p><p>💬 <b>Text HOME to 741741</b> (Crisis Text Line) to text with a trained counselor.</p><p>🚑 <b>Call 911</b> or tell a parent right away if you have chest pain that does not ease up, you cannot breathe, you faint, or you are not sure whether it is panic or something else. It is always okay to check.</p><p>If you ever have thoughts of hurting yourself, tell a grown-up and call or text 988 right then.</p></div>';
+}};
+
+/* ---------- FUN HELPERS ---------- */
+var toastEl=$('#toast'),toastT=null;
+function toast(msg,ms){toastEl.innerHTML=msg;toastEl.classList.add('show');clearTimeout(toastT);toastT=setTimeout(function(){toastEl.classList.remove('show')},ms||2600)}
+function confetti(n){
+  var cols=['#ff7aa8','#ffd86b','#6ee7d8','#b9a8ff','#8fb6ff','#ff9a76'];
+  for(var i=0;i<(n||50);i++){(function(){
+    var d=document.createElement('i');d.className='cf';d.style.left=(Math.random()*100)+'vw';d.style.background=cols[Math.floor(Math.random()*cols.length)];
+    d.style.animationDuration=(2+Math.random()*2)+'s';d.style.animationDelay=(Math.random()*.5)+'s';
+    document.body.appendChild(d);setTimeout(function(){d.remove()},5000);
+  })()}
+}
+var LOVE=['Dad loves you 💙','Dad loves you SO much 💙','Dad loves you to the moon and back 🌙','Dad loves you. Always. 💙','Dad loves you and is proud of you 💙'],li=0;
+var heartBtn=$('#heart');
+heartBtn.onclick=function(){
+  toast('<b>'+LOVE[li%LOVE.length]+'</b>',2800);li++;chime(660,.07,1.6);
+  var r=heartBtn.getBoundingClientRect();
+  for(var k=0;k<8;k++){(function(k){
+    var s=document.createElement('span');s.className='fh';s.textContent=['💙','❤️','💖','💕'][k%4];
+    s.style.left=(r.left+10+Math.random()*30)+'px';s.style.top=(r.top)+'px';s.style.setProperty('--dx',((Math.random()-.5)*160)+'px');s.style.animationDelay=(k*.08)+'s';
+    document.body.appendChild(s);setTimeout(function(){s.remove()},2000);
+  })(k)}
+};
+/* easter eggs: title x5, bell x7 */
+var tCount=0,tTimer=null;
+titleEl.onclick=function(){tCount++;clearTimeout(tTimer);tTimer=setTimeout(function(){tCount=0},1500);
+  if(tCount>=5){tCount=0;confetti(80);chime(660,.1,2);toast('🏆 <b>Secret found!</b><br>Kira is officially awesome.',3500)}};
+var bCount=0,bTimer=null;
+sndBtn.addEventListener('click',function(){bCount++;clearTimeout(bTimer);bTimer=setTimeout(function(){bCount=0},4000);
+  if(bCount>=7){bCount=0;confetti(50);toast('🎟️ <b>FREE HUG COUPON</b><br>Redeemable from Dad any time. Never expires.',4200)}});
+var DADLINES=['',"Ooops! 😬","Again?! Why would you do that??","You're pressing it on purpose?","I need my hair!","You monster.","Please. I'm begging you.","I had a haircut planned!","Is this payback for something?","My forehead is getting bigger, Kira.","Halfway to bald. Congratulations.","I can feel a breeze up there.","The hair is gone. It was a good run.","I'm not mad. Just disappointed. (I'm mad.)","My head is getting sunburned indoors.","Even my comb is crying.","Four more and I'm shiny.","Do you WANT a bald dad? Is that it?","Almost there... and it's all your fault.","One more press and I become a lightbulb."];
+function dadOverlay(){
+  var n=store.get('dadn',0)+1;store.set('dadn',n);
+  var hair=Math.max(0,100-n*5);store.set('hair',hair);
+  var bald=n>=20,face=bald?'👨‍🦲':(n>=12?'😭':(n>=2?'😧':'👨'));
+  var head,sub,shout;
+  if(n===1){head='Ooops! 😬';sub='This button makes Dad a little more bald... you shouldn\'t have pressed this one.';shout='KIRA!!!'}
+  else if(n<20){head=DADLINES[n];sub='';shout='KIRA!!!'}
+  else if(n===20){head='OK I\'M FULLY BALD NOW...';sub='';shout='BAAAALLLDDDD!!!'}
+  else{head='Already bald. Nothing left to lose.';sub='Press again if you must. Dad still loves you. 💙';shout='BAAALDDD'}
+  var o=document.createElement('div');o.className='overlay';
+  o.innerHTML='<div class="obox"><div class="dadface">'+face+'</div><div class="oh">'+head+'</div>'+(sub?'<p class="big">'+sub+'</p>':'')+'<div class="shout">'+shout+'</div><p>Dad\'s hair: <b>'+hair+'%</b></p><div class="bar"><i style="width:'+hair+'%"></i></div>'+(bald&&n===20?'<p>Dad is now completely bald. He still loves you. 💙</p>':'')+'<div class="row center"><button class="btn primary" id="oc">'+(n>=5?'I\'m sorry Dad 😇 (not sorry)':'I\'m sorry Dad 😇')+'</button>'+(n>1?'<button class="btn ghost" id="og">🌱 Regrow</button>':'')+'</div></div>';
+  var strands=bald?40:14+Math.min(n,14);
+  for(var i=0;i<strands;i++){var h=document.createElement('span');h.className='hr';h.textContent='〜';h.style.left=(Math.random()*100)+'%';h.style.animationDuration=(2+Math.random()*3)+'s';h.style.animationDelay=(Math.random()*2)+'s';o.appendChild(h)}
+  document.body.appendChild(o);
+  if(bald){confetti(40);[392,330,262,196,130].forEach(function(f,k){setTimeout(function(){blip(f)},k*200)})}
+  else[330,262,196].forEach(function(f,k){setTimeout(function(){blip(f)},k*220)});
+  $('#oc',o).onclick=function(){o.remove()};
+  var g=$('#og',o);if(g)g.onclick=function(){store.set('hair',100);store.set('dadn',0);o.remove();toast('🌱 Dad\'s hair has regrown. Magic! (Please do not press the button again.)',3200)};
+}
+
+/* ---------- PET ---------- */
+var PETS={
+ bunny:{k:'animal',n:'Bunny',c1:'#ffd1e3',c2:'#ff9cc2',belly:'#fff5f9',acc:'#ff6fa5',food:'🥕'},
+ kitten:{k:'animal',n:'Kitten',c1:'#ffd9a8',c2:'#ffab5c',belly:'#fff4e3',acc:'#ff8a3d',food:'🐟'},
+ bear:{k:'animal',n:'Bear Cub',c1:'#e3c4a2',c2:'#b9855a',belly:'#f6e8d6',acc:'#6cc3e8',food:'🍯'},
+ fire:{k:'dragon',n:'Fire Dragon',c1:'#ff9a76',c2:'#ef4b4b',belly:'#ffe2b8',acc:'#ffb347',wing:'#b5322f',food:'🍖'},
+ sea:{k:'dragon',n:'Sea Dragon',c1:'#7ee3d6',c2:'#2a9fd0',belly:'#dffcf7',acc:'#63e6ff',wing:'#1c6fa0',food:'🦐'},
+ star:{k:'dragon',n:'Star Dragon',c1:'#c9a8ff',c2:'#7a52d6',belly:'#f1e6ff',acc:'#ffd86b',wing:'#4b2f98',food:'🍇'}
+};
+var EGGS={
+ animal:[{id:'bunny',n:'Rosy egg',c1:'#ffe3ee',c2:'#ff9cc2',pat:'dots'},{id:'kitten',n:'Sunny egg',c1:'#ffe9c4',c2:'#ffb25e',pat:'stripes'},{id:'bear',n:'Honey egg',c1:'#f6e3cc',c2:'#c9966a',pat:'speck'}],
+ dragon:[{id:'fire',n:'Ember egg',c1:'#ffb199',c2:'#e64545',pat:'scales'},{id:'sea',n:'Tide egg',c1:'#a6f0e6',c2:'#2a9fd0',pat:'waves'},{id:'star',n:'Cosmic egg',c1:'#d8c2ff',c2:'#6a45c8',pat:'stars'}]
+};
+var STAGE_AT=[0,20,50,90],STAGE_NAME=['Egg','Baby','Kid','Teen','Grown-up'],uidc=0;
+function stageFor(g){return g>=90?4:g>=50?3:g>=20?2:1}
+function eggDef(id){var all=EGGS.animal.concat(EGGS.dragon);return all.filter(function(e){return e.id===id})[0]}
+function eggSVG(e,taps){
+  var u='e'+(uidc++),h='<svg viewBox="0 0 200 210" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="'+u+'g" cx="38%" cy="30%" r="80%"><stop offset="0" stop-color="'+e.c1+'"/><stop offset="1" stop-color="'+e.c2+'"/></radialGradient><clipPath id="'+u+'c"><path d="M100 14 C142 14 168 84 168 128 C168 170 138 198 100 198 C62 198 32 170 32 128 C32 84 58 14 100 14Z"/></clipPath></defs>';
+  h+='<ellipse cx="100" cy="202" rx="62" ry="7" fill="#000" opacity=".15"/>';
+  h+='<path d="M100 14 C142 14 168 84 168 128 C168 170 138 198 100 198 C62 198 32 170 32 128 C32 84 58 14 100 14Z" fill="url(#'+u+'g)"/><g clip-path="url(#'+u+'c)">';
+  if(e.pat==='dots')h+='<g fill="#fff" opacity=".65"><circle cx="78" cy="100" r="11"/><circle cx="120" cy="70" r="8"/><circle cx="130" cy="135" r="12"/><circle cx="85" cy="160" r="9"/><circle cx="108" cy="112" r="6"/><circle cx="55" cy="135" r="7"/></g>';
+  if(e.pat==='stripes')h+='<g stroke="#fff" stroke-width="11" fill="none" opacity=".55"><path d="M30 105 Q100 135 170 105"/><path d="M28 140 Q100 172 172 140"/><path d="M50 72 Q100 95 150 72"/></g>';
+  if(e.pat==='speck')h+='<g fill="#8b5a33" opacity=".5"><circle cx="70" cy="95" r="4"/><circle cx="125" cy="85" r="5"/><circle cx="100" cy="130" r="4"/><circle cx="140" cy="150" r="5"/><circle cx="72" cy="155" r="5"/><circle cx="105" cy="60" r="3"/><circle cx="55" cy="130" r="3"/><circle cx="148" cy="115" r="3"/></g>';
+  if(e.pat==='scales'){h+='<g stroke="#7a1f1f" stroke-width="3" fill="none" opacity=".45">';for(var r=0;r<6;r++){h+='<path d="M'+(20+(r%2)*10)+' '+(70+r*24)+' q10 14 20 0 q10 14 20 0 q10 14 20 0 q10 14 20 0 q10 14 20 0 q10 14 20 0 q10 14 20 0"/>'}h+='</g>'}
+  if(e.pat==='waves')h+='<g stroke="#fff" stroke-width="6" fill="none" opacity=".6" stroke-linecap="round"><path d="M30 90 q17 -16 34 0 t34 0 t34 0 t34 0"/><path d="M30 125 q17 -16 34 0 t34 0 t34 0 t34 0"/><path d="M30 160 q17 -16 34 0 t34 0 t34 0 t34 0"/></g>';
+  if(e.pat==='stars')h+='<g fill="#ffe27a" font-size="26" text-anchor="middle" opacity=".9"><text x="80" y="100">✦</text><text x="125" y="78">✦</text><text x="118" y="140">✦</text><text x="75" y="160">✦</text><text x="98" y="52" font-size="16">✦</text></g>';
+  h+='<ellipse cx="78" cy="62" rx="14" ry="26" fill="#fff" opacity=".35" transform="rotate(-18 78 62)"/></g>';
+  if(taps>=1)h+='<path d="M100 28 L94 52 L106 66 L98 86" stroke="#2a2140" stroke-width="3" fill="none" stroke-linejoin="round"/>';
+  if(taps>=2)h+='<path d="M60 100 L82 112 L74 130 L96 138" stroke="#2a2140" stroke-width="3" fill="none" stroke-linejoin="round"/>';
+  if(taps>=3)h+='<path d="M150 96 L128 112 L138 130 L116 142" stroke="#2a2140" stroke-width="3" fill="none" stroke-linejoin="round"/>';
+  if(taps>=4)h+='<path d="M50 150 L76 152 L84 170 L110 168 L120 186 L150 176" stroke="#2a2140" stroke-width="3" fill="none" stroke-linejoin="round"/>';
+  return h+'</svg>';
+}
+function creature(key,stage,mood){
+  var p=PETS[key],u='c'+(uidc++),dr=p.k==='dragon',dk='#2a2140',s=[.62,.76,.9,1.04][stage-1],h='';
+  var fierce=dr&&stage===4&&mood!=='happy'&&mood!=='joy'&&mood!=='sleep'&&mood!=='eat';
+  h+='<svg viewBox="-50 -10 340 232" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="'+u+'b" cx="38%" cy="28%" r="80%"><stop offset="0" stop-color="'+p.c1+'"/><stop offset="1" stop-color="'+p.c2+'"/></radialGradient></defs>';
+  h+='<ellipse cx="120" cy="204" rx="'+(72*s)+'" ry="'+(9*s)+'" fill="#000" opacity=".16"/>';
+  h+='<g transform="translate(120 198) scale('+s+') translate(-120 -198)">';
+  // back parts
+  if(dr&&stage>=2){var ws=[0,.5,.72,1.15][stage-1];
+    h+='<g transform="translate(150 134) scale('+ws+')"><path d="M0 0 Q50 -45 95 -32 Q82 -10 98 12 Q72 4 62 26 Q50 8 28 20 Q22 8 0 14Z" fill="'+p.wing+'"/></g>';
+    h+='<g transform="translate(90 134) scale('+(-ws)+' '+ws+')"><path d="M0 0 Q50 -45 95 -32 Q82 -10 98 12 Q72 4 62 26 Q50 8 28 20 Q22 8 0 14Z" fill="'+p.wing+'"/></g>';}
+  if(dr){h+='<path d="M172 172 Q222 184 226 140" stroke="'+p.c2+'" stroke-width="'+(10+stage*2)+'" fill="none" stroke-linecap="round"/>';
+    if(stage===4)h+='<polygon points="226,116 214,144 238,144" fill="'+p.acc+'"/>';else h+='<circle cx="226" cy="140" r="'+(5+stage)+'" fill="'+p.acc+'"/>';}
+  else if(key==='bunny')h+='<circle cx="176" cy="172" r="14" fill="#fff"/>';
+  else if(key==='kitten')h+='<path d="M170 176 Q214 176 208 128" stroke="'+p.c2+'" stroke-width="14" fill="none" stroke-linecap="round"/>';
+  else h+='<circle cx="176" cy="170" r="10" fill="'+p.c2+'"/>';
+  if(key==='bunny')h+='<g transform="rotate(-12 96 70)"><ellipse cx="96" cy="64" rx="15" ry="40" fill="'+p.c1+'"/><ellipse cx="96" cy="68" rx="8" ry="28" fill="#ff9cc2"/></g><g transform="rotate(12 144 70)"><ellipse cx="144" cy="64" rx="15" ry="40" fill="'+p.c1+'"/><ellipse cx="144" cy="68" rx="8" ry="28" fill="#ff9cc2"/></g>';
+  if(key==='kitten')h+='<path d="M70 104 L80 50 L114 90Z" fill="'+p.c1+'"/><path d="M170 104 L160 50 L126 90Z" fill="'+p.c1+'"/><path d="M80 94 L84 66 L102 90Z" fill="#ff9cc2"/><path d="M160 94 L156 66 L138 90Z" fill="#ff9cc2"/>';
+  if(key==='bear')h+='<circle cx="80" cy="92" r="21" fill="'+p.c2+'"/><circle cx="80" cy="92" r="11" fill="#f6e8d6"/><circle cx="160" cy="92" r="21" fill="'+p.c2+'"/><circle cx="160" cy="92" r="11" fill="#f6e8d6"/>';
+  if(dr){
+    if(stage<4)h+='<path d="M90 96 L96 76 L106 94Z" fill="'+p.acc+'"/><path d="M150 96 L144 76 L134 94Z" fill="'+p.acc+'"/>';
+    else h+='<path d="M86 98 Q58 54 92 30 Q86 62 108 92Z" fill="'+p.acc+'"/><path d="M154 98 Q182 54 148 30 Q154 62 132 92Z" fill="'+p.acc+'"/>';
+    if(stage>=3){h+='<g fill="'+p.acc+'"><polygon points="114,86 120,70 126,86"/>'+(stage===4?'<polygon points="104,90 108,76 114,88"/><polygon points="126,88 132,76 136,90"/>':'')+'</g>'}
+  }
+  // body
+  h+='<ellipse cx="120" cy="138" rx="'+(dr&&stage===4?58:56)+'" ry="'+(dr&&stage===4?58:53)+'" fill="url(#'+u+'b)"/>';
+  h+='<ellipse cx="68" cy="156" rx="10" ry="15" fill="'+p.c1+'" transform="rotate(14 68 156)"/><ellipse cx="172" cy="156" rx="10" ry="15" fill="'+p.c1+'" transform="rotate(-14 172 156)"/>';
+  h+='<ellipse cx="120" cy="162" rx="32" ry="29" fill="'+p.belly+'" opacity=".95"/>';
+  if(dr&&stage>=3){h+='<g stroke="'+p.c1+'" stroke-width="3" opacity=".7" fill="none"><path d="M96 152 Q120 158 144 152"/><path d="M94 164 Q120 170 146 164"/><path d="M98 176 Q120 181 142 176"/></g>'}
+  h+='<ellipse cx="92" cy="192" rx="20" ry="10" fill="'+p.c2+'"/><ellipse cx="148" cy="192" rx="20" ry="10" fill="'+p.c2+'"/>';
+  // face
+  if(!(dr&&stage===4)||mood==='happy'||mood==='joy')h+='<circle cx="80" cy="142" r="9" fill="#ff6f9f" opacity=".38"/><circle cx="160" cy="142" r="9" fill="#ff6f9f" opacity=".38"/>';
+  var ey=124;
+  if(mood==='sleep'){h+='<path d="M88 '+ey+' Q98 132 108 '+ey+'" stroke="'+dk+'" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M132 '+ey+' Q142 132 152 '+ey+'" stroke="'+dk+'" stroke-width="4" fill="none" stroke-linecap="round"/>'}
+  else if(mood==='happy'||mood==='joy'||mood==='eat'){h+='<path d="M88 128 Q98 114 108 128" stroke="'+dk+'" stroke-width="4.5" fill="none" stroke-linecap="round"/><path d="M132 128 Q142 114 152 128" stroke="'+dk+'" stroke-width="4.5" fill="none" stroke-linecap="round"/>'}
+  else if(fierce){h+='<path d="M86 124 Q98 112 110 122 Q98 134 86 124Z" fill="#ffd24d" stroke="'+dk+'" stroke-width="2"/><path d="M130 122 Q142 112 154 124 Q142 134 130 122Z" fill="#ffd24d" stroke="'+dk+'" stroke-width="2"/><rect x="97" y="115" width="3.5" height="17" rx="1.7" fill="'+dk+'"/><rect x="140" y="115" width="3.5" height="17" rx="1.7" fill="'+dk+'"/><path d="M82 108 L112 119" stroke="'+dk+'" stroke-width="5" stroke-linecap="round"/><path d="M158 108 L128 119" stroke="'+dk+'" stroke-width="5" stroke-linecap="round"/>'}
+  else{[98,142].forEach(function(x){h+='<circle cx="'+x+'" cy="'+ey+'" r="11.5" fill="'+dk+'"/><circle cx="'+(x+3.5)+'" cy="'+(ey-4)+'" r="4.2" fill="#fff"/><circle cx="'+(x-3)+'" cy="'+(ey+3.5)+'" r="2" fill="#fff"/>'});
+    if(mood==='sad'){h+='<path d="M84 110 L108 116" stroke="'+dk+'" stroke-width="3.5" stroke-linecap="round"/><path d="M156 110 L132 116" stroke="'+dk+'" stroke-width="3.5" stroke-linecap="round"/><path d="M90 138 q-4 9 0 11 q5 -2 0 -11z" fill="#7cc7ff"/>'}}
+  if(!dr){h+='<ellipse cx="120" cy="138" rx="5.5" ry="3.8" fill="'+(key==='bear'?'#4a3426':'#ff7a9c')+'"/>';if(key==='kitten')h+='<path d="M76 136 L98 140 M76 148 L98 145 M164 136 L142 140 M164 148 L142 145" stroke="#fff" stroke-width="2" opacity=".85"/>'}
+  else h+='<circle cx="113" cy="139" r="1.9" fill="'+dk+'" opacity=".5"/><circle cx="127" cy="139" r="1.9" fill="'+dk+'" opacity=".5"/>';
+  if(mood==='eat')h+='<ellipse cx="120" cy="152" rx="10" ry="9" fill="#8a2b45"/><ellipse cx="120" cy="158" rx="6" ry="4" fill="#ff8aa0"/>';
+  else if(mood==='sad')h+='<path d="M110 154 Q120 145 130 154" stroke="'+dk+'" stroke-width="4" fill="none" stroke-linecap="round"/>';
+  else if(mood==='sleep')h+='<path d="M112 150 Q120 154 128 150" stroke="'+dk+'" stroke-width="3.5" fill="none" stroke-linecap="round"/>';
+  else if(dr&&stage===4)h+='<path d="M102 148 Q120 156 138 146" stroke="'+dk+'" stroke-width="4" fill="none" stroke-linecap="round"/><polygon points="109,150 114,151 111,160" fill="#fff"/><polygon points="127,151 132,149 129,160" fill="#fff"/>';
+  else h+='<path d="M108 148 Q120 160 132 148" stroke="'+dk+'" stroke-width="4" fill="none" stroke-linecap="round"/>';
+  // accessories
+  if(stage===4&&!dr){
+    if(key==='bunny')h+='<g transform="translate(160 86)"><path d="M0 0 L-20 -11 L-20 11Z M0 0 L20 -11 L20 11Z" fill="'+p.acc+'"/><circle r="5" fill="#d94a85"/></g>';
+    if(key==='kitten')h+='<path d="M84 176 Q120 192 156 176" stroke="#ff5d8f" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="120" cy="187" r="6.5" fill="#ffd24d"/>';
+    if(key==='bear')h+='<path d="M80 172 Q120 194 160 172" stroke="'+p.acc+'" stroke-width="11" fill="none" stroke-linecap="round"/><rect x="140" y="176" width="13" height="28" rx="5" fill="'+p.acc+'"/>';
+  }
+  if(stage===4)h+='<g fill="#ffd86b" font-size="20" text-anchor="middle"><text x="40" y="70">✦</text><text x="204" y="60" font-size="26">✦</text><text x="30" y="150" font-size="14">✦</text></g>';
+  if(mood==='sleep')h+='<g fill="#fff" font-weight="800" font-family="sans-serif"><text x="172" y="88" font-size="24">z</text><text x="190" y="64" font-size="32">Z</text></g>';
+  if(mood==='joy')h+='<g fill="#ffd86b" font-size="22" text-anchor="middle"><text x="50" y="90">✦</text><text x="192" y="100">✦</text></g>';
+  return h+'</g></svg>';
+}
+function petHall(){
+  var hall=store.get('hall',[]);if(!hall.length)return '';
+  return '<h2>🏡 Pet Hall</h2><p class="mut">Your past buddies live here happily.</p><div class="hall">'+hall.map(function(x){return '<div>'+creature(x.sp,x.stage,'happy')+x.name+'</div>'}).join('')+'</div>';
+}
+S.pet={title:'Pet buddy',render:function(m){
+  var pet=store.get('pet',null),tm=null,sayT=null,lastMood='',tick=null,rapid=[],confirmNew=false;
+  function save(){if(pet)store.set('pet',pet)}
+  function show(){runCleanups();onLeave(function(){save();clearInterval(tick)});
+    if(!pet)viewType();else if(pet.stage===0)viewEgg();else viewPlay()}
+  function viewType(){
+    m.innerHTML='<p style="text-align:center">Every great friend starts as an egg. What kind of egg do you want to hatch?</p>'+
+    '<button class="card click" data-t="animal"><h3>🐰 A cutesy animal</h3><div class="helps">Soft, sweet and snuggly. A bunny, a kitten or a bear cub is waiting inside.</div></button>'+
+    '<button class="card click" data-t="dragon"><h3>🐉 A fearsome dragon</h3><div class="helps">It will be adorable at first... but wait until it is fully grown. 😈🔥</div></button>'+
+    '<p class="mut" style="text-align:center">Your buddy never dies, ever. If you are away, it just gets sleepy and misses you.</p>'+petHall();
+    m.querySelectorAll('[data-t]').forEach(function(b){b.onclick=function(){viewEggs(b.dataset.t)}});
+  }
+  function viewEggs(type){
+    m.innerHTML='<p style="text-align:center">'+(type==='animal'?'Pick an egg. Something cute is inside!':'Pick an egg. Something tiny and (for now) very cute is inside...')+'</p><div class="eggs">'+EGGS[type].map(function(e){return '<button class="eggb" data-e="'+e.id+'">'+eggSVG(e,0)+e.n+'</button>'}).join('')+'</div><div class="row center"><button class="btn ghost" id="bk">← Pick another type</button></div>';
+    m.querySelectorAll('[data-e]').forEach(function(b){b.onclick=function(){viewName(b.dataset.e)}});
+    $('#bk',m).onclick=viewType;
+  }
+  function viewName(sp){
+    var e=eggDef(sp);
+    m.innerHTML='<div class="eggbig">'+eggSVG(e,0)+'</div><h3 style="text-align:center">What will you name it?</h3><input class="tx" id="nm" type="text" maxlength="12" placeholder="Name"><div class="row center"><button class="btn primary" id="go">Continue ▶</button></div>';
+    $('#go',m).onclick=function(){
+      var n=$('#nm',m).value.trim()||'Buddy';
+      pet={sp:sp,name:n,stage:0,taps:0,growth:0,hunger:80,happy:80,energy:80,clean:95,poops:0,sleeping:false,last:Date.now()};
+      save();show();
+    };
+  }
+  function viewEgg(){
+    var e=eggDef(pet.sp);
+    m.innerHTML='<h3 style="text-align:center">'+esc(pet.name)+'\'s egg</h3><p style="text-align:center" id="eh">Tap the egg to help it hatch! ('+pet.taps+'/5)</p><div class="eggbig" id="eg">'+eggSVG(e,pet.taps)+'</div>';
+    $('#eg',m).onclick=function(){
+      pet.taps++;blip(300+pet.taps*60);
+      var el=$('#eg',m);el.classList.remove('wob');void el.offsetWidth;
+      if(pet.taps>=5){pet.stage=1;pet.growth=0;pet.last=Date.now();save();confetti(70);chime(528);viewPlay();say('✨ '+pet.name+' hatched! Say hello!');return}
+      el.innerHTML=eggSVG(e,pet.taps);el.classList.add('wob');$('#eh',m).textContent='Tap the egg to help it hatch! ('+pet.taps+'/5)';save();
+    };
+  }
+  function addGrowth(g){
+    pet.growth+=g;var ns=stageFor(pet.growth);
+    if(ns>pet.stage){pet.stage=ns;confetti(70);chime(660,.12,2.5);
+      var dr=PETS[pet.sp].k==='dragon';
+      say(ns===4?(dr?'🔥 '+pet.name+' is fully grown... a FEARSOME dragon! (Still a softie inside.)':'🌟 '+pet.name+' is all grown up!'):'🌱 '+pet.name+' grew into a '+STAGE_NAME[ns].toLowerCase()+'!');
+      drawScene();}
+  }
+  function applyTime(){
+    var now=Date.now(),dt=Math.min(600,Math.max(0,(now-pet.last)/60000));pet.last=now;
+    if(pet.stage===0||dt<=0)return;var FL=15;
+    if(pet.sleeping){pet.energy=Math.min(100,pet.energy+dt*5);pet.hunger=Math.max(FL,pet.hunger-dt*.3)}
+    else{pet.energy=Math.max(FL,pet.energy-dt*.35);pet.hunger=Math.max(FL,pet.hunger-dt*.9);pet.happy=Math.max(FL,pet.happy-dt*.5);pet.clean=Math.max(FL,pet.clean-dt*.35);
+      pet._pt=(pet._pt||0)+dt;while(pet._pt>25){pet._pt-=25;pet.poops=Math.min(3,(pet.poops||0)+1)}
+      addGrowth(Math.min(dt,12)/6)}
+  }
+  function moodNow(){
+    if(tm&&Date.now()<tm.until)return tm.mood;
+    if(pet.sleeping)return 'sleep';
+    if(pet.hunger<30||pet.happy<30||pet.energy<20)return 'sad';
+    return pet.happy>70?'happy':'normal';
+  }
+  function setMood(mood,ms){tm={mood:mood,until:Date.now()+ms};drawScene();setTimeout(function(){if(cur&&cur.name==='pet')drawScene()},ms+50)}
+  function say(t){var el=$('#psay',m);if(el)el.textContent=t}
+  function fx(emoji){var sc=$('#scene',m);if(!sc)return;var d=document.createElement('span');d.className='fx';d.textContent=emoji;d.style.left=(30+Math.random()*40)+'%';d.style.top='35%';sc.appendChild(d);setTimeout(function(){d.remove()},1500)}
+  function drawScene(){
+    var sc=$('#scene',m);if(!sc)return;var mood=moodNow();lastMood=mood;
+    sc.classList.toggle('night',!!pet.sleeping);
+    var poops='';for(var i=0;i<(pet.poops||0);i++)poops+='<span class="poop" style="left:'+(14+i*14)+'%">💩</span>';
+    sc.innerHTML='<div class="pet" id="pt">'+creature(pet.sp,pet.stage,mood)+'</div>'+poops;
+    $('#pt',m).onclick=petIt;
+  }
+  function drawBars(){
+    var B=[['🍎',pet.hunger,'#ff8a6b'],['💖',pet.happy,'#ff7aa8'],['⚡',pet.energy,'#ffd86b'],['🫧',pet.clean,'#6ec6ff']];
+    var el=$('#bars',m);if(!el)return;
+    el.innerHTML=B.map(function(b){return '<div class="bar2"><span>'+b[0]+'</span><div class="trk"><i style="width:'+Math.round(b[1])+'%;background:'+b[2]+'"></i></div></div>'}).join('');
+    var st=pet.stage,pg=st>=4?100:(pet.growth-STAGE_AT[st-1])/(STAGE_AT[st]-STAGE_AT[st-1])*100;
+    $('#grow',m).style.width=Math.max(0,Math.min(100,pg))+'%';
+    $('#gl',m).textContent=STAGE_NAME[st]+(st>=4?' ✨':' · growing up '+Math.round(Math.max(0,Math.min(100,pg)))+'%');
+    $('#sl',m).innerHTML=pet.sleeping?'<span>☀️</span>Wake up':'<span>🌙</span>Sleep';
+  }
+  function petIt(){
+    if(pet.sleeping){say('Shhh... '+pet.name+' is sleeping. 💤');return}
+    var now=Date.now();rapid.push(now);rapid=rapid.filter(function(t){return now-t<3000});
+    pet.happy=Math.min(100,pet.happy+3);blip(600+Math.random()*200);fx('💕');setMood('joy',1200);
+    if(rapid.length>=10){say('Hehehe, stop, that tickles!! 🤭');rapid=[]}
+    else say(pet.name+' loves it! 💕');
+    if(/dad/i.test(pet.name)&&rapid.length===3)say('You named it Dad? It has so much hair though... 😏');
+    drawBars();
+  }
+  function act(kind){
+    if(kind==='sleep'){
+      if(pet.sleeping){pet.sleeping=false;if(Date.now()-(pet.sleepStart||0)>15000){addGrowth(1);say('☀️ Good morning! '+pet.name+' feels refreshed.')}else say('Barely slept! '+pet.name+' yawns.')}
+      else{pet.sleeping=true;pet.sleepStart=Date.now();say('Lights out. Sweet dreams. 🌙')}
+      save();drawScene();drawBars();return}
+    if(pet.sleeping){say('Shhh... '+pet.name+' is sleeping. Tap Wake up first. 💤');return}
+    if(kind==='feed'){
+      if(pet.hunger>=95){say(pet.name+' is full! 😋');return}
+      pet.hunger=Math.min(100,pet.hunger+30);pet.happy=Math.min(100,pet.happy+3);addGrowth(2);fx(PETS[pet.sp].food);setMood('eat',1400);blip(500);say('Nom nom nom! 😋')}
+    if(kind==='play'){
+      if(pet.energy<15){say(pet.name+' is too sleepy to play. Try a nap! 🌙');return}
+      pet.happy=Math.min(100,pet.happy+25);pet.energy=Math.max(15,pet.energy-12);pet.hunger=Math.max(15,pet.hunger-6);addGrowth(2);fx('⚽');fx('⭐');setMood('joy',1800);chime(700,.06,1);say('Wheee! So fun! 🎉')}
+    if(kind==='clean'){
+      if((pet.poops||0)===0&&pet.clean>=90){say('Already squeaky clean! ✨');return}
+      pet.poops=0;pet.clean=100;addGrowth(1);fx('🫧');fx('✨');setMood('happy',1500);say('Sparkly clean! ✨')}
+    save();drawScene();drawBars();
+  }
+  function viewPlay(){
+    applyTime();
+    m.innerHTML='<h3 style="text-align:center;margin-bottom:8px">'+esc(pet.name)+' <small>the '+PETS[pet.sp].n+'</small></h3>'+
+    '<div class="scene" id="scene"></div><div class="petsay" id="psay">Tap '+esc(pet.name)+' to pet it 💕</div>'+
+    '<div class="bars" id="bars"></div><div class="stepper" id="gl"></div><div class="bar"><i id="grow"></i></div><div style="height:12px"></div>'+
+    '<div class="abts"><button class="abtn" data-a="feed"><span>'+PETS[pet.sp].food+'</span>Feed</button><button class="abtn" data-a="play"><span>⚽</span>Play</button><button class="abtn" data-a="clean"><span>🧼</span>Clean</button><button class="abtn" data-a="sleep" id="sl"><span>🌙</span>Sleep</button></div>'+
+    '<div class="row center" style="margin-top:18px"><button class="btn ghost" id="newegg">🥚 Hatch a new egg</button></div>'+petHall();
+    m.querySelectorAll('[data-a]').forEach(function(b){b.onclick=function(){ac();act(b.dataset.a)}});
+    $('#newegg',m).onclick=function(){
+      if(!confirmNew){confirmNew=true;this.textContent='Tap again: '+pet.name+' moves to the Pet Hall';return}
+      var hall=store.get('hall',[]);hall.push({sp:pet.sp,name:pet.name,stage:pet.stage});store.set('hall',hall.slice(-12));
+      pet=null;store.set('pet',null);show();
+    };
+    drawScene();drawBars();
+    tick=setInterval(function(){
+      if(!cur||cur.name!=='pet')return;
+      applyTime();drawBars();save();
+      if(moodNow()!==lastMood)drawScene();
+    },1000);
+  }
+  show();
+}};
+
+/* ---------- MORE GAMES ---------- */
+S.memory={title:'Memory Match',render:function(m){
+  var ALL=['🐰','🐱','🐻','🦊','🐼','🐸','🦄','🐙','🐧','🦋','🐢','🐨'],cards,open,matched,moves,lock,timers=[];
+  onLeave(function(){timers.forEach(clearTimeout)});
+  function sh(a){return a.sort(function(){return Math.random()-.5})}
+  function reset(){var set=sh(ALL.slice()).slice(0,8);cards=sh(set.concat(set));open=[];matched=0;moves=0;lock=false;draw()}
+  function draw(){
+    m.innerHTML='<p style="text-align:center">Flip two cards. Find all the matching pairs. Moves: <b>'+moves+'</b></p><div class="mg">'+cards.map(function(c,i){
+      var st=cards[i].d?' d':(open.indexOf(i)>-1?' o':'');return '<button class="mc'+st+'" data-i="'+i+'">'+((cards[i].d||open.indexOf(i)>-1)?cards[i].e:'💙')+'</button>'}).join('')+'</div>'+(matched===16?'<div class="msg">🎉 All matched in '+moves+' moves!</div>':'<div class="msg"></div>')+'<div class="row center"><button class="btn" id="rs">New game</button></div>';
+    m.querySelectorAll('.mc').forEach(function(b){b.onclick=function(){flip(+b.dataset.i)}});$('#rs',m).onclick=reset;
+  }
+  function flip(i){
+    if(lock||cards[i].d||open.indexOf(i)>-1)return;open.push(i);blip(450);
+    if(open.length===2){moves++;var a=cards[open[0]],b=cards[open[1]];
+      if(a.e===b.e){a.d=b.d=true;matched+=2;open=[];chime(660,.07,1);if(matched===16){confetti(60);chime(528)}}
+      else{lock=true;draw();timers.push(setTimeout(function(){open=[];lock=false;draw()},800));return}}
+    draw();
+  }
+  var base=ALL;ALL=base;
+  var _reset=reset;reset=function(){var set=sh(base.slice()).slice(0,8);cards=sh(set.concat(set).map(function(e){return {e:e,d:false}}));open=[];matched=0;moves=0;lock=false;draw()};
+  reset();
+}};
+S.fireflies={title:'Firefly Jar',render:function(m){
+  var N=7,caught=0,ffs=[],raf=null,box;
+  m.innerHTML='<p style="text-align:center">Gently tap the fireflies to catch them. There is no timer. Fireflies caught: <b id="fc">0</b>/10</p><div class="ffs" id="ffs"></div><div class="msg" id="fm"></div>';
+  box=$('#ffs',m);
+  function spawn(){
+    var b=document.createElement('button');b.className='ff';b.setAttribute('aria-label','firefly');
+    var f={el:b,x:Math.random(),y:Math.random()*.8,vx:(Math.random()-.5)*.0016,vy:(Math.random()-.5)*.0016,ph:Math.random()*6};
+    b.onclick=function(e){e.stopPropagation();caught++;blip(500+caught*40);b.remove();ffs.splice(ffs.indexOf(f),1);
+      $('#fc',m).textContent=Math.min(caught,10);
+      if(caught>=10){$('#fm',m).textContent='🌟 The jar is full! Look how bright it is. Catch-and-release: they float back out...';chime(528);confetti(30);caught=0;setTimeout(function(){$('#fc',m)&&($('#fc',m).textContent=0);$('#fm',m)&&($('#fm',m).textContent='')},3500)}
+      setTimeout(function(){if(cur&&cur.name==='fireflies')spawn()},900)};
+    box.appendChild(b);ffs.push(f);
+  }
+  for(var i=0;i<N;i++)spawn();
+  function loop(t){
+    ffs.forEach(function(f){f.ph+=.02;f.x+=f.vx+Math.sin(f.ph)*.0008;f.y+=f.vy+Math.cos(f.ph*.8)*.0008;
+      if(f.x<.04||f.x>.96)f.vx*=-1;if(f.y<.04||f.y>.9)f.vy*=-1;f.x=Math.max(.02,Math.min(.98,f.x));f.y=Math.max(.02,Math.min(.95,f.y));
+      f.el.style.left=(f.x*100)+'%';f.el.style.top=(f.y*100)+'%';f.el.style.opacity=.65+.35*Math.sin(f.ph*3)});
+    raf=requestAnimationFrame(loop);
+  }
+  raf=requestAnimationFrame(loop);onLeave(function(){cancelAnimationFrame(raf)});
+}};
+S.echo={title:'Pattern Echo',render:function(m){
+  var COLS=['#ff7a8a','#ffd24d','#63e6a0','#6aa8ff'],FR=[262,330,392,523],seq=[],idx=0,inp=false,best=0,timers=[];
+  onLeave(function(){timers.forEach(clearTimeout)});
+  m.innerHTML='<p style="text-align:center">Watch the pattern, then repeat it. If you slip, no worries, it just replays. Best streak: <b id="bs">0</b></p><div class="pads">'+COLS.map(function(c,i){return '<button class="pad" data-p="'+i+'" style="background:'+c+';color:'+c+'"></button>'}).join('')+'</div><div class="msg" id="em">Press Start</div><div class="row center"><button class="btn primary" id="st">Start</button></div>';
+  function tone(f){if(!soundOn)return;try{var a=ac(),t=a.currentTime,o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.2,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+.4);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+.45)}catch(e){}}
+  function light(i){var p=$('[data-p="'+i+'"]',m);if(!p)return;p.classList.add('lit');tone(FR[i]);timers.push(setTimeout(function(){p.classList.remove('lit')},350))}
+  function play(){inp=false;idx=0;$('#em',m).textContent='Watch...';
+    seq.forEach(function(p,k){timers.push(setTimeout(function(){light(p)},600+k*700))});
+    timers.push(setTimeout(function(){inp=true;$('#em',m).textContent='Your turn!'},600+seq.length*700))}
+  function addStep(){seq.push(Math.floor(Math.random()*4))}
+  $('#st',m).onclick=function(){ac();seq=[];addStep();play();this.textContent='Restart'};
+  m.querySelectorAll('.pad').forEach(function(b){b.onclick=function(){
+    if(!inp)return;var p=+b.dataset.p;light(p);
+    if(p===seq[idx]){idx++;if(idx>=seq.length){inp=false;best=Math.max(best,seq.length);$('#bs',m).textContent=best;$('#em',m).textContent='✨ Nice!';addStep();timers.push(setTimeout(play,1000))}}
+    else{inp=false;$('#em',m).textContent='Oops! No worries, watch again 💙';timers.push(setTimeout(play,1100))}
+  }});
+}};
+S.purr={title:'Purr Counter',render:function(m){
+  var n=0,F=['😺','😸','😻','🐱','😽'];
+  m.innerHTML='<p style="text-align:center">Pet the kitty. That is the whole game. 🐾</p><div class="purr" id="cat">😺</div><div class="rv" id="pc">0</div><div class="msg" id="pm">purrs</div>';
+  var cat=$('#cat',m);
+  cat.onclick=function(e){
+    n++;$('#pc',m).textContent=n;cat.textContent=F[Math.floor(Math.random()*F.length)];
+    if(soundOn){try{var a=ac(),t=a.currentTime,o=a.createOscillator(),g=a.createGain();o.type='sawtooth';o.frequency.value=70+Math.random()*20;g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(.06,t+.05);g.gain.exponentialRampToValueAtTime(.0001,t+.5);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+.55)}catch(x){}}
+    try{if(navigator.vibrate)navigator.vibrate(12)}catch(x){}
+    var s=document.createElement('span');s.className='fh';s.textContent='💕';s.style.left=(e.clientX-10)+'px';s.style.top=(e.clientY-10)+'px';s.style.setProperty('--dx',((Math.random()-.5)*80)+'px');document.body.appendChild(s);setTimeout(function(){s.remove()},1700);
+    var msgs={10:'Purr purr purr...',30:'The kitty is very happy.',60:'This is the happiest cat in the world.',100:'100 purrs! You are a certified Cat Whisperer 😻'};
+    if(msgs[n]){$('#pm',m).textContent=msgs[n];if(n===100)confetti(60)}
+  };
+}};
+var JOKES=[['Why don\'t skeletons fight each other?','They don\'t have the guts.'],['I\'m hungry.','Hi Hungry, I\'m Dad.'],['Why did the scarecrow win an award?','He was outstanding in his field.'],['What do you call a fake noodle?','An impasta.'],['Why can\'t you trust stairs?','They\'re always up to something.'],['Why did the bicycle fall over?','It was two-tired.'],['What do you call a bear with no teeth?','A gummy bear.'],['How does a penguin build its house?','Igloos it together.'],['What do you call a sleeping dinosaur?','A dino-snore.'],['Why did the cookie go to the doctor?','It felt crumby.'],['What\'s orange and sounds like a parrot?','A carrot.'],['Why don\'t eggs tell jokes?','They\'d crack each other up.'],['What did the ocean say to the beach?','Nothing, it just waved.'],['Why did the math book look so sad?','It had too many problems.'],['Why do dragons sleep all day?','They like to hunt knights.'],['What do you call cheese that isn\'t yours?','Nacho cheese.'],['I used to hate facial hair...','But then it grew on me.'],['Why did the tomato turn red?','It saw the salad dressing.'],['What do you call a fish wearing a bowtie?','Sofishticated.'],['I would tell you a construction joke...','But I\'m still working on it.']];
+S.jokes={title:'Dad jokes',render:function(m){
+  var i=Math.floor(Math.random()*JOKES.length),shown=false;
+  function draw(){var j=JOKES[i];m.innerHTML='<p style="text-align:center" class="mut">Warning: extremely groan-worthy.</p><div class="joke">'+esc(j[0])+(shown?'<br><br><b style="color:var(--warm)">'+esc(j[1])+'</b>':'')+'</div><div class="row center">'+(shown?'<button class="btn" id="gr">😩 Groan</button>':'<button class="btn primary" id="rv2">Reveal</button>')+'<button class="btn" id="nx2">Another one ▶</button></div><div class="msg" id="gm"></div>';
+    var r=$('#rv2',m);if(r)r.onclick=function(){shown=true;draw()};
+    var g=$('#gr',m);if(g)g.onclick=function(){$('#gm',m).textContent=['Dad is very proud of that one.','Dad regrets nothing.','Dad will be here all week.'][Math.floor(Math.random()*3)];[200,180,160].forEach(function(f,k){setTimeout(function(){blip(f)},k*160)})};
+    $('#nx2',m).onclick=function(){var n;do{n=Math.floor(Math.random()*JOKES.length)}while(n===i);i=n;shown=false;draw()};
+  }
+  draw();
+}};
+
+/* ---------- INSTALL (PWA) ---------- */
+try{
+  if('serviceWorker' in navigator&&location.protocol.indexOf('http')===0){navigator.serviceWorker.register('sw.js').catch(function(){})}
+  window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();window.__dip=e;if(cur&&cur.name==='home')paint()});
+  window.addEventListener('appinstalled',function(){window.__dip=null;if(cur&&cur.name==='home')paint()});
+}catch(e){}
+function isStandalone(){try{return window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true}catch(e){return false}}
+
+go('home',null,true);
+window.__kira={go:go,back:back,S:S,creature:creature,eggSVG:eggSVG,EGGS:EGGS};
+})();
+</script>
+</body>
+</html>
